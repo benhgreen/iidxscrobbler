@@ -6,23 +6,23 @@ from security import *
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-data = None
+songdata = None
+playerdata = None
 
-def scrapeData(purpose, userid):
+def scrapeData(userid):
 	client = clientGen()
 	client.connect()
 	queryLatch = latch.latch(1)
 
 	global target_url, connector_guid
 
-	if purpose == "refresh_music":
+	if userid == "refresh_music":
 		print "REFRESHING"
 		target_url = "http://webui.programmedsun.com/iidx/0/music"
 		connector_guid = "e53e03d2-1468-4ebb-8fe9-2ef64de33db2"
 	else:
 		target_url = "http://webui.programmedsun.com/iidx/0/players/%s/scores" % userid
 		connector_guid = "9247219f-a36f-4e6b-85b0-1956eff5836d"
-
 	
 	def callback(query, message):
 		global data
@@ -68,16 +68,25 @@ def scrapeData(purpose, userid):
 def refreshSongList():
 
 	songlist = {'songid' : 'songinfo'}
-	raw_data = scrapeData('refresh_music', None)
+	raw_data = scrapeData('refresh_music')
 
 	for song in raw_data:
 
-		songid = song["song_info/_source"][14:]
-		songid = songid[:songid.index('/')]
-		
+		songid = stripSongURL(song)
 		songinfo = (song["song_info/_text"], song["artist"])
 
 		songlist[songid] = songinfo
 
 
 	return songlist
+
+
+#strip song url to its id
+def stripSongURL(song):
+	songurl = song["song_info/_source"][14:]
+	return songurl[:songurl.index('/')]
+
+
+#return song info from main data bank
+def songLookup(songdb, songid):
+	print songdb[songid]

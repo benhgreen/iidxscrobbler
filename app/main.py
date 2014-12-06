@@ -6,6 +6,11 @@ from functions import *
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-songlist = refreshSongList()
+musiclist = refreshSongList()
 
-print songlist
+while true:
+	playerlist = scrapeData("8717-9975")
+
+	for song in playerlist:
+		songLookup(musiclist, stripSongURL(song))
+		print song["timestamp"]
