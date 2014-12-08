@@ -9,6 +9,7 @@ sys.setdefaultencoding("utf-8")
 songdata = None
 playerdata = None
 
+#scrape data from import.io
 def scrapeData(userid):
 	client = clientGen()
 	client.connect()
@@ -16,6 +17,7 @@ def scrapeData(userid):
 
 	global target_url, connector_guid
 
+	#if the userid is 'refresh_music', this method will update the music library
 	if userid == "refresh_music":
 		print "REFRESHING"
 		target_url = "http://webui.programmedsun.com/iidx/0/music"
@@ -24,6 +26,7 @@ def scrapeData(userid):
 		target_url = "http://webui.programmedsun.com/iidx/0/players/%s/scores" % userid
 		connector_guid = "9247219f-a36f-4e6b-85b0-1956eff5836d"
 	
+	#callback to export the returned data
 	def callback(query, message):
 		global data
 		
