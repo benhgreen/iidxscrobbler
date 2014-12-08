@@ -89,4 +89,4 @@ def stripSongURL(song):
 
 #return song info from main data bank
 def songLookup(songdb, songid):
-	print songdb[songid]
+	return songdb[songid]
