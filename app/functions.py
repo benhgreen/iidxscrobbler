@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-	
 
-import sys, httplib, urllib, importio, latch
+import sys, httplib, urllib, importio, latch, string
 from security import *
 
 reload(sys)
@@ -77,7 +77,11 @@ def refreshSongList():
 	for song in raw_data:
 
 		songid = stripSongURL(song)
-		songinfo = (song["song_info/_text"], song["artist"])
+		#strip out stupid leggendaria suffix
+		if "†LEGGENDARIA" in song["song_info/_text"]:
+			songinfo = (string.replace(song["song_info/_text"], "†LEGGENDARIA", ""), song["artist"])
+		else:
+			songinfo = (song["song_info/_text"], song["artist"])
 
 		songlist[songid] = songinfo
 

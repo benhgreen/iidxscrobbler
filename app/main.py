@@ -29,11 +29,11 @@ def iidxScrobble(user, lfm_object):
 
 		#if we reach our 'lastchecked' time, then obviously there's no use checking the 
 		#older songs
-		if(user["lastchecked"] >= songtime:
+		if user["lastchecked"] >= songtime:
 			break
 		#if we see a song with misscount of -1, the user did not play it to completion and 
 		#therefore it should not be scrobbled
-		elif song["miss_count"] == -1):
+		elif song["miss_count"] == -1:
 			pass
 		#if we've reached this point, this song should be scrobbled!
 		else:
