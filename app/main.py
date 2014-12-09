@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-	
 
-import sys, json, security
+import sys, json, security, threading
+from threading import Timer
 from datetime import datetime
 from functions import *
 
@@ -13,27 +14,11 @@ sys.setdefaultencoding("utf-8")
 #set date formatting to create datetime objects
 date_format = "%d %b %Y %X"
 
-
-if __name__ == '__main__':
-
-	#refresh music list in case there are any new songs
-	musiclist = refreshSongList()
-
-	#fetch user, this would ordinarily be from a database in a web app
-	user = {"userid": "8717-9975", "lastchecked": datetime.strptime("04 Dec 2014 19:38:21", date_format), "lfm_user": LFM_USER, "lfm_pwd": LFM_PWD}
-
-	#obviously this will already be hashed in the deployed version
-	password_hash = pylast.md5(user["lfm_pwd"])
-
-	#todo: move this into user object
-	lfm_object = pylast.LastFMNetwork(api_key = LFM_APIKEY, api_secret =
-	LFM_SECRET, username = user["lfm_user"], password_hash = password_hash)
-
-	#test if we hustlin'
-	track = lfm_object.get_track("Rick Ross", "Hustlin'")
-	track.love()
-
-	#get user's last 25 played songs from the server
+def iidxScrobble(user, lfm_object):
+	#make this method run every n seconds
+	threading.Timer(150.0, iidxScrobble, [user, lfm_object]).start()
+	
+	#get user's last 50 played songs from the server
 	playerlist = scrapeData(user["userid"])
 
 	#iterate through songs in list
@@ -48,7 +33,28 @@ if __name__ == '__main__':
 			pass
 		else:
 			#these songs should be scrobbled!
-			songLookup(musiclist, stripSongURL(song))
-			print "%s: %s" % (song["song_info/_text"], song["timestamp"])
+			(song_name, artist_name) = songLookup(musiclist, stripSongURL(song))
+			submit_time = int((songtime - datetime(1970,1,1)).total_seconds())
 
-	last_checked = datetime.now()
+			print "scrobbling %s: %s" % (song["song_info/_text"], song["timestamp"])
+			lfm_object.scrobble(artist=artist_name, title=song_name, timestamp=submit_time)
+
+	
+	user["lastchecked"] = datetime.now()
+
+if __name__ == '__main__':
+
+	#refresh music list in case there are any new songs
+	musiclist = refreshSongList()
+
+	#fetch user, this would ordinarily be from a database in a web app
+	user = {"userid": "8717-9975", "lastchecked": datetime.strptime("08 Dec 2014 22:42:00", date_format), "lfm_user": LFM_USER, "lfm_pwd": LFM_PWD}
+
+	#obviously this will already be hashed in the deployed version
+	password_hash = pylast.md5(user["lfm_pwd"])
+
+	#todo: move this into user object
+	lfm_object = pylast.LastFMNetwork(api_key = LFM_APIKEY, api_secret =
+	LFM_SECRET, username = user["lfm_user"], password_hash = password_hash)
+
+	iidxScrobble(user, lfm_object)

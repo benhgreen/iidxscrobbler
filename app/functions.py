@@ -19,10 +19,11 @@ def scrapeData(userid):
 
 	#if the userid is 'refresh_music', this method will update the music library
 	if userid == "refresh_music":
-		print "REFRESHING"
+		print "refreshing songs list..."
 		target_url = "http://webui.programmedsun.com/iidx/0/music"
 		connector_guid = "e53e03d2-1468-4ebb-8fe9-2ef64de33db2"
 	else:
+		print "refreshing player tracklist..."
 		target_url = "http://webui.programmedsun.com/iidx/0/players/%s/scores" % userid
 		connector_guid = "9247219f-a36f-4e6b-85b0-1956eff5836d"
 	
@@ -79,7 +80,6 @@ def refreshSongList():
 		songinfo = (song["song_info/_text"], song["artist"])
 
 		songlist[songid] = songinfo
-
 
 	return songlist
 
