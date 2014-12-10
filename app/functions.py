@@ -49,10 +49,21 @@ def scrapeData(userid, network):
 		if message["type"] == "MESSAGE":
 			if "errorType" in message["data"]:
 				print "Got an error!" 
-				print json.dumps(message["data"], indent = 4)
+				#handle users with hidden accounts
+				if "Not authorised" in message["data"]["error"]:
+					print "This user has a hidden profile!"
+					data = "ERROR"
+				else:
+					print "An error occured."
+					print json.dumps(message["data"], indent = 4)
+					data = "ERROR"
 			else:
-				print "Got data!"
-				data = (message["data"]["results"])
+				#handle non-existant users
+				if message["data"]["results"] == []:
+					print "Non-existant user."
+					data = "ERROR"
+				else:
+					data = (message["data"]["results"])
 		
 		if query.finished(): 
 			queryLatch.countdown()
@@ -79,7 +90,7 @@ def scrapeData(userid, network):
 
 	queryLatch.await()
 	client.disconnect()
-	
+
 	return data
 
 # refreshes song list and converts to dictionary where key is songid

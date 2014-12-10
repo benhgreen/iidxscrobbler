@@ -21,6 +21,10 @@ def iidxScrobble(user, lfm_object):
 	#get user's last 50 played songs from the server
 	playerlist = scrapeData(user["userid"], user["network"])
 
+	if playerlist == "ERROR":
+		print "Not scrobbling for player %s." % user["userid"]
+		return
+
 	#iterate through songs in list
 	for song in playerlist:
 
