@@ -60,7 +60,7 @@ def scrapeData(userid, network):
 			else:
 				#handle non-existant users
 				if message["data"]["results"] == []:
-					print "Non-existant user."
+					print "Non-existent user."
 					data = "ERROR"
 				else:
 					data = (message["data"]["results"])
