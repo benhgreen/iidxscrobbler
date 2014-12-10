@@ -19,7 +19,7 @@ def iidxScrobble(user, lfm_object):
 	threading.Timer(150.0, iidxScrobble, [user, lfm_object]).start()
 	
 	#get user's last 50 played songs from the server
-	playerlist = scrapeData(user["userid"])
+	playerlist = scrapeData(user["userid"], user["network"])
 
 	#iterate through songs in list
 	for song in playerlist:
@@ -40,7 +40,7 @@ def iidxScrobble(user, lfm_object):
 			(song_name, artist_name) = songLookup(musiclist, stripSongURL(song))
 			submit_time = int((songtime - datetime(1970,1,1)).total_seconds())
 
-			print "scrobbling %s: %s" % (song["song_info/_text"], song["timestamp"])
+			print "		scrobbling %s: %s" % (song["song_info/_text"], song["timestamp"])
 			lfm_object.scrobble(artist=artist_name, title=song_name, timestamp=submit_time)
 
 	
@@ -49,10 +49,10 @@ def iidxScrobble(user, lfm_object):
 if __name__ == '__main__':
 
 	#refresh music list in case there are any new songs
-	musiclist = refreshSongList()
+	musiclist = refreshSongList('pw')
 
 	#fetch user, this would ordinarily be from a database in a web app
-	user = {"userid": "8717-9975", "lastchecked": datetime.strptime("08 Dec 2014 22:42:00", date_format), "lfm_user": LFM_USER, "lfm_pwd": LFM_PWD}
+	user = {"userid": "4623-0106", "lastchecked": datetime.strptime("27 Nov 2014 22:42:00", date_format), "lfm_user": LFM_USER, "lfm_pwd": LFM_PWD, "network": 'pw'}
 
 	#obviously this will already be hashed in the deployed version
 	password_hash = pylast.md5(user["lfm_pwd"])
