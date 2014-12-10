@@ -16,7 +16,6 @@ date_format = "%d %b %Y %X"
 
 def iidxScrobble(user, lfm_object):
 	#make this method run every n seconds
-	threading.Timer(150.0, iidxScrobble, [user, lfm_object]).start()
 	
 	#get user's last 50 played songs from the server
 	playerlist = scrapeData(user["userid"], user["network"])
@@ -47,19 +46,25 @@ def iidxScrobble(user, lfm_object):
 			print "		scrobbling %s: %s" % (song_name, song["timestamp"])
 			#lfm_object.scrobble(artist=artist_name, title=song_name, timestamp=submit_time)
 
-	
 	user["lastchecked"] = datetime.now()
 
 if __name__ == '__main__':
-
+	global user
+	generateCookies()
+	
 	#refresh music list in case there are any new songs
-	musiclist = refreshSongList('pw')
+	musiclist = refreshSongList('ps')
 
-	#fetch user, this would ordinarily be from a database in a web app
-	user = {"userid": "4623-0106", "lastchecked": datetime.strptime("22 Nov 2014 22:42:00", date_format), "lfm_user": LFM_USER, "lfm_pwd": LFM_PWD, "network": 'pw'}
+	#load userlist
+	playerlist = json.load(open('userlist.json'))
+	for player in playerlist["data"]:
+		userid = player["userid"][0]
+		username = player["djname"][0]
 
-	#todo: move this into user object
-	lfm_object = pylast.LastFMNetwork(api_key = LFM_APIKEY, api_secret =
-	LFM_SECRET, username = user["lfm_user"], password_hash = user["lfm_pwd"])
+		user = {"userid": userid, "lastchecked": datetime.strptime("22 Nov 2014 22:42:00", date_format), "lfm_user": LFM_USER, "lfm_pwd": LFM_PWD, "network": 'ps'}
 
-	iidxScrobble(user, lfm_object)
+		#todo: move this into user object
+		lfm_object = pylast.LastFMNetwork(api_key = LFM_APIKEY, api_secret =
+		LFM_SECRET, username = user["lfm_user"], password_hash = user["lfm_pwd"])
+		print "refreshing player %s's tracklist" % username
+		iidxScrobble(user, lfm_object)
