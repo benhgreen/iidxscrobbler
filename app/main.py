@@ -45,7 +45,7 @@ def iidxScrobble(user, lfm_object):
 			submit_time = int((songtime - datetime(1970,1,1)).total_seconds())
 
 			print "		scrobbling %s: %s" % (song_name, song["timestamp"])
-			lfm_object.scrobble(artist=artist_name, title=song_name, timestamp=submit_time)
+			#lfm_object.scrobble(artist=artist_name, title=song_name, timestamp=submit_time)
 
 	
 	user["lastchecked"] = datetime.now()
@@ -56,13 +56,10 @@ if __name__ == '__main__':
 	musiclist = refreshSongList('pw')
 
 	#fetch user, this would ordinarily be from a database in a web app
-	user = {"userid": "4623-0106", "lastchecked": datetime.strptime("27 Nov 2014 22:42:00", date_format), "lfm_user": LFM_USER, "lfm_pwd": LFM_PWD, "network": 'pw'}
-
-	#obviously this will already be hashed in the deployed version
-	password_hash = pylast.md5(user["lfm_pwd"])
+	user = {"userid": "4623-0106", "lastchecked": datetime.strptime("22 Nov 2014 22:42:00", date_format), "lfm_user": LFM_USER, "lfm_pwd": LFM_PWD, "network": 'pw'}
 
 	#todo: move this into user object
 	lfm_object = pylast.LastFMNetwork(api_key = LFM_APIKEY, api_secret =
-	LFM_SECRET, username = user["lfm_user"], password_hash = password_hash)
+	LFM_SECRET, username = user["lfm_user"], password_hash = user["lfm_pwd"])
 
 	iidxScrobble(user, lfm_object)

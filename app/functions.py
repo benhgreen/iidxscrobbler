@@ -14,12 +14,12 @@ def scrapeData(userid, network):
 	client = clientGen()
 	client.connect()
 	queryLatch = latch.latch(1)
-
-	global target_url, connector_guid, short_url
+	global target_url, connector_guid, short_url, cookie
 
 	#if the userid is 'refresh_music', this method will update the music library, otherwise it will check the user's recently played
 	#stuff for scraping programmed sun
 	if(network == 'ps'):
+		cookie = PS_COOKIE
 		short_url = "webui.programmedsun.com"
 		if userid == "refresh_music":
 			print "refreshing PS song list..."
@@ -31,6 +31,7 @@ def scrapeData(userid, network):
 			connector_guid = "9247219f-a36f-4e6b-85b0-1956eff5836d"
 	#stuff for scraping programmed world
 	elif(network == 'pw'):
+		cookie = PW_COOKIE
 		short_url = "programmedworld.net"
 		if(userid == "refresh_music"):
 			print "refreshing PW song list..."
@@ -40,10 +41,13 @@ def scrapeData(userid, network):
 			print "refreshing PW player %s tracklist..." % userid
 			target_url = "https://programmedworld.net/iidx/22/players/%s/scores" % userid
 			connector_guid = "329e12e0-85ea-4961-83b6-a1156e25d46a"
+	else:
+		print "Invalid game network."
+		return "ERROR"
 	#callback to export the returned data
 	def callback(query, message):
 		global data
-		
+		# print json.dumps(message)
 		if message["type"] == "DISCONNECT":
 			print "Query in progress when library disconnected"
 		if message["type"] == "MESSAGE":
@@ -78,12 +82,7 @@ def scrapeData(userid, network):
 		},
 		"additionalInput": {
 			connector_guid: {
-				"domainCredentials": {
-					short_url: {
-						"username": getPSuser(),
-						"password": getPSpwd(),
-					}
-				}
+				"cookies": cookie 
 			}
 		}
 	}, callback)
