@@ -102,7 +102,7 @@ def refreshSongList(network):
 
 	for song in raw_data:
 
-		songid = stripSongURL(song)
+		songid = stripSongURL(song, network)
 		#strip out stupid leggendaria suffix
 		if "†LEGGENDARIA" in song["song_info/_text"]:
 			songinfo = (string.replace(song["song_info/_text"], "†LEGGENDARIA", ""), song["artist"])
@@ -114,9 +114,15 @@ def refreshSongList(network):
 	return songlist
 
 
-#strip song url to its id
-def stripSongURL(song):
-	songurl = song["song_info/_source"][14:]
+#strip song url to its numerical id
+def stripSongURL(song, network):
+	global songurl
+	#for whatever reason the programmed world scraper leaves an
+	#extra slash in the source url, will look into later
+	if network == 'pw':
+		songurl = song["song_info/_source"][15:]
+	else:
+		songurl = song["song_info/_source"][14:]
 	return songurl[:songurl.index('/')]
 
 

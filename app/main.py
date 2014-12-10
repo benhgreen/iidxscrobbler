@@ -41,10 +41,10 @@ def iidxScrobble(user, lfm_object):
 			pass
 		#if we've reached this point, this song should be scrobbled!
 		else:
-			(song_name, artist_name) = songLookup(musiclist, stripSongURL(song))
+			(song_name, artist_name) = songLookup(musiclist, stripSongURL(song, user["network"]))
 			submit_time = int((songtime - datetime(1970,1,1)).total_seconds())
 
-			print "		scrobbling %s: %s" % (song["song_info/_text"], song["timestamp"])
+			print "		scrobbling %s: %s" % (song_name, song["timestamp"])
 			lfm_object.scrobble(artist=artist_name, title=song_name, timestamp=submit_time)
 
 	
