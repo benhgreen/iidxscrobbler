@@ -28,7 +28,7 @@ def scrapeData(userid, network):
 			target_url = "http://webui.programmedsun.com/iidx/0/music"
 			connector_guid = "e53e03d2-1468-4ebb-8fe9-2ef64de33db2"
 		else:
-			# print "refreshing PS player %s's tracklist..." % userid
+			print "refreshing PS player %s's tracklist..." % userid
 			target_url = "http://webui.programmedsun.com/iidx/0/players/%s/scores" % userid
 			connector_guid = "9247219f-a36f-4e6b-85b0-1956eff5836d"
 	#stuff for scraping programmed world
@@ -55,6 +55,7 @@ def scrapeData(userid, network):
 					data = "ERROR"
 				else:
 					print "An error occured."
+					print json.dumps(message, indent = 4)
 					data = "ERROR"
 			else:
 				#handle non-existant users

@@ -5,6 +5,8 @@ from threading import Timer
 from datetime import datetime
 from functions import *
 
+from random import shuffle
+
 sys.path.append("../deps/")
 import pylast
 
@@ -14,7 +16,7 @@ sys.setdefaultencoding("utf-8")
 #set date formatting to create datetime objects
 date_format = "%d %b %Y %X"
 
-def iidxScrobble(user, lfm_object):
+def iidxScrobble(user, lfm_object, musiclist):
 	#make this method run every n seconds
 	
 	#get user's last 50 played songs from the server
@@ -52,19 +54,38 @@ if __name__ == '__main__':
 	global user
 	generateCookies()
 	
+	musiclist = {'pw': None, 'ps': None}
+
 	#refresh music list in case there are any new songs
-	musiclist = refreshSongList('ps')
+	musiclist['pw'] = refreshSongList('pw')
+	musiclist['ps'] = refreshSongList('ps')
+
+	userarray = []
 
 	#load userlist
-	playerlist = json.load(open('userlist.json'))
-	for player in playerlist["data"]:
+	pw_list = json.load(open('pwlist.json'))
+	ps_list = json.load(open('pslist.json'))
+	
+	for player in pw_list["data"]:
 		userid = player["userid"][0]
 		username = player["djname"][0]
 
-		user = {"userid": userid, "lastchecked": datetime.strptime("22 Nov 2014 22:42:00", date_format), "lfm_user": LFM_USER, "lfm_pwd": LFM_PWD, "network": 'ps'}
 
+		userarray.append({"userid": userid, "lastchecked": datetime.strptime("08 Dec 2014 22:42:00", date_format), "lfm_user": LFM_USER, "lfm_pwd": LFM_PWD, "network": 'pw', "djname": username})
+
+	for player in ps_list["data"]:
+		userid = player["userid"][0]
+		username = player["djname"][0]
+
+		userarray.append({"userid": userid, "lastchecked": datetime.strptime("08 Dec 2014 22:42:00", date_format), "lfm_user": LFM_USER, "lfm_pwd": LFM_PWD, "network": 'ps', "djname": username})
+
+
+	shuffle(userarray)
+
+	for user in userarray:
 		#todo: move this into user object
 		lfm_object = pylast.LastFMNetwork(api_key = LFM_APIKEY, api_secret =
 		LFM_SECRET, username = user["lfm_user"], password_hash = user["lfm_pwd"])
-		print "refreshing player %s's tracklist" % username
-		iidxScrobble(user, lfm_object)
+		
+		
+		iidxScrobble(user, lfm_object, musiclist[user["network"]])
