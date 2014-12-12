@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-	
 
-import sys, json, security, threading
-from functions import *
+import sys, json, security, threading, pymongo
 from datetime import datetime
-from random import shuffle
+from functions import *
 from usermanager import *
 
 sys.path.append("../deps/")
 import pylast
-from filelock import FileLock
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -24,7 +22,7 @@ def iidxScrobble(user, lfm_object, musiclist):
 
 	if playerlist == "ERROR":
 		print "Not scrobbling for player %s." % user['userid']
-		deleteUser(user['userid'], 'NETWORK ERROR')
+		markUser(user['userid'], 'NETWORK ERROR')
 		return
 
 	#iterate through songs in list
@@ -62,19 +60,14 @@ if __name__ == '__main__':
 	musiclist['ps'] = refreshSongList('ps')
 	musiclist['pw'] = refreshSongList('pw')
 
-	#load userlist
-	lock = FileLock('userlist.json')
-	lock.acquire()
-	userlist = json.load(open('userlist.json'))
-	lock.release()
+	for user in getDatabase().users.find():
 
-	for user in userlist:
 		#make sure last.fm still works for this user
 		try:
 			lfm_object = pylast.LastFMNetwork(api_key = LFM_APIKEY, api_secret = LFM_SECRET, session_key = "976d989cbae4b163af487b36e05835a0")
 		except pylast.WSError:
 			print "Error connecting to last.fm"
-			deleteUser(user['userid'], 'LASTFM ERROR')
+			markUser(user['userid'], 'LASTFM ERROR')
 		#if it works, go ahead and check the tracklist
 		else:
 			iidxScrobble(user, lfm_object, musiclist[user['network']])

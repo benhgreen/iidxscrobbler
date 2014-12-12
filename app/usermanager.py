@@ -2,9 +2,9 @@
 import sys, json
 from datetime import datetime
 from security import *
+from pymongo import MongoClient
 sys.path.append("../deps/")
 import pylast
-from filelock import FileLock
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -21,67 +21,58 @@ def sessionKeyGen(lfm_user, lfm_pwd):
 	else:
 		return getattr(lfm_object, 'session_key')
 
-#checks if user already exists in the database
-def checkExistingUser(user, database):
-	for player in database:
-		if player["userid"] == user["userid"]:
-			return "true"
-	return "false"
+#returns true if user already exists in the database
+def checkExistingUser(userid, db):
+	if(db.users.find_one({"userid": userid})) != None:
+		return True
 
-#delete user from database
-def deleteUser(userid, reason):
-	lock = FileLock('userlist.json')
-	lock.acquire()
-	#open player list and check existing players
-	data_file  = open("userlist.json", 'r+')
-	database = json.load(data_file)
-	for user in database:
-		if user['userid'] == userid:
-			with open('errorlog.txt', 'a') as errorlog:
-				errorlog.write("\nDeleted user %s. Reason: %s." % (userid, reason))
-			database.remove(user)
-	data_file.close()
-	new_datafile  = open("userlist.json", 'w+')
-	json.dump(database, new_datafile)
-	lock.release
+#mark user which can't be accessed, either via last.fm or scraping
+def markUser(userid, reason):
+	with open('errorlog.txt', 'a') as errorlog:
+		errorlog.write("\nMarked user %s. Reason: %s" % (userid, reason))
+	getDatabase().users.update(
+		{'userid': userid},
+		{
+			'$set':{
+					'status': reason
+			}
+		})
+
 
 #adds user to json list
 def createUser(userid, network, lfm_user, lfm_pwd):
 
-	user  = {"userid": userid, "network": network, "lfm_session": sessionKeyGen(lfm_user, lfm_pwd), "lastchecked": datetime.now().strftime(date_format), "delete": "false"}
+	if checkExistingUser(userid, getDatabase()):
+		print "User already exists!"
+		return "EXISTS"
 
-	if(user["lfm_session"]) == "INVALID":
+	#verify last.fm credentials
+	lfm_session = sessionKeyGen(lfm_user, lfm_pwd)
+	if(lfm_session) == "INVALID":
 		#lastfm credentials are invalid, alert the user
 		pass
 	else:
-		lock = FileLock('userlist.json')
-		lock.acquire()
-		
-		#open player list and check existing players
-		data_file  = open("userlist.json", 'r+')
-		database = json.load(data_file)
-		if checkExistingUser(user, database) == "true":
-			print "User already exists!"
-		else:
-			#append user and regenerate database
-			database.append(user)
-			data_file.close()
-			new_datafile = open("userlist.json", 'w+')
-			json.dump(database, new_datafile)
-
-		lock.release()
+		#create user and insert into database
+		getDatabase().users.insert(
+			{
+				"userid": userid,
+				"network": network,
+				"lfm_session": lfm_session,
+				"lastchecked": datetime.now().strftime(date_format),
+				"status": "working"
+			})
 
 #updates user's 'lastchecked' element, mostly copied from deleteUser
-def updateLastChecked(user):
-	lock = FileLock('userlist.json')
-	lock.acquire()
-	#open player list and check existing players
-	data_file  = open("userlist.json", 'r+')
-	database = json.load(data_file)
-	for user in database:
-		if user['userid'] == userid:
-			user['lastchecked'] = datetime.now().strftime(date_format)
-	data_file.close()
-	new_datafile  = open("userlist.json", 'w+')
-	json.dump(database, new_datafile)
-	lock.release
+def updateLastChecked(userid):
+	getDatabase().users.update(
+			{'userid': userid},
+			{
+				'$set':{
+						'lastchecked': datetime.now().strftime(date_format)
+				}
+			})
+
+#initialize MongoClient object and return database
+def getDatabase():
+	client = MongoClient()
+	return client.db
