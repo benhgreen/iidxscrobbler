@@ -28,14 +28,30 @@ def checkExistingUser(user, database):
 			return "true"
 	return "false"
 
+#delete user from database
+def deleteUser(userid, reason):
+	lock = FileLock('userlist.json')
+	lock.acquire()
+	#open player list and check existing players
+	data_file  = open("userlist.json", 'r+')
+	database = json.load(data_file)
+	for user in database:
+		if user['userid'] == userid:
+			with open('errorlog.txt', 'a') as errorlog:
+				errorlog.write("\nDeleted user %s. Reason: %s." % (userid, reason))
+			database.remove(user)
+	data_file.close()
+	new_datafile  = open("userlist.json", 'w+')
+	json.dump(database, new_datafile)
+	lock.release
+
 #adds user to json list
 def createUser(userid, network, lfm_user, lfm_pwd):
 
 	user  = {"userid": userid, "network": network, "lfm_session": sessionKeyGen(lfm_user, lfm_pwd), "lastchecked": datetime.now().strftime(date_format), "delete": "false"}
 
 	if(user["lfm_session"]) == "INVALID":
-		#lastfm credentials are invalid
-		print "INVALID"
+		#lastfm credentials are invalid, alert the user
 		pass
 	else:
 		lock = FileLock('userlist.json')
@@ -50,7 +66,22 @@ def createUser(userid, network, lfm_user, lfm_pwd):
 			#append user and regenerate database
 			database.append(user)
 			data_file.close()
-			new_datafile  = open("userlist.json", 'w+')
+			new_datafile = open("userlist.json", 'w+')
 			json.dump(database, new_datafile)
 
 		lock.release()
+
+#updates user's 'lastchecked' element, mostly copied from deleteUser
+def updateLastChecked(user):
+	lock = FileLock('userlist.json')
+	lock.acquire()
+	#open player list and check existing players
+	data_file  = open("userlist.json", 'r+')
+	database = json.load(data_file)
+	for user in database:
+		if user['userid'] == userid:
+			user['lastchecked'] = datetime.now().strftime(date_format)
+	data_file.close()
+	new_datafile  = open("userlist.json", 'w+')
+	json.dump(database, new_datafile)
+	lock.release
