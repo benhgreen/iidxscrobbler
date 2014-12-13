@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-	
 import sys, json
 from datetime import datetime
-from security import *
+from secrets import *
 from pymongo import MongoClient
 sys.path.append("../deps/")
 import pylast
