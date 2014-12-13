@@ -46,10 +46,10 @@ def iidxScrobble(user, lfm_object, musiclist):
 			submit_time = int((songtime - datetime(1970,1,1)).total_seconds())
 
 			print "		scrobbling %s: %s for player %s" % (song_name, song['timestamp'], user['userid'])
-			lfm_object.scrobble(artist=artist_name, title=song_name, timestamp=submit_time)
+			#lfm_object.scrobble(artist=artist_name, title=song_name, timestamp=submit_time)
 
-		#finally, update user's 'lastchecked' element
-		updateLastChecked(user)
+	#finally, update user's 'lastchecked' element
+	updateLastChecked(user['userid'])
 
 if __name__ == '__main__':
 	#generate cookies
@@ -58,13 +58,12 @@ if __name__ == '__main__':
 	#generate master song lists
 	musiclist = {}
 	musiclist['ps'] = refreshSongList('ps')
-	musiclist['pw'] = refreshSongList('pw')
+	#musiclist['pw'] = refreshSongList('pw')
 
-	for user in getDatabase().users.find():
-
+	for user in getDatabase().users.find({'status': 'working', 'network': 'ps'}):
 		#make sure last.fm still works for this user
 		try:
-			lfm_object = pylast.LastFMNetwork(api_key = LFM_APIKEY, api_secret = LFM_SECRET, session_key = "976d989cbae4b163af487b36e05835a0")
+			lfm_object = pylast.LastFMNetwork(api_key = LFM_APIKEY, api_secret = LFM_SECRET, session_key = user['lfm_session'])
 		except pylast.WSError:
 			print "Error connecting to last.fm"
 			markUser(user['userid'], 'LASTFM ERROR')

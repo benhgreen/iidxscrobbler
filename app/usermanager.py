@@ -22,14 +22,14 @@ def sessionKeyGen(lfm_user, lfm_pwd):
 		return getattr(lfm_object, 'session_key')
 
 #returns true if user already exists in the database
-def checkExistingUser(userid, db):
-	if(db.users.find_one({"userid": userid})) != None:
+def checkExistingUser(userid):
+	if(getDatabase().users.find_one({"userid": userid})) != None:
 		return True
 
-#mark user which can't be accessed, either via last.fm or scraping
+#mark user for later deletion if calls to their PS/PW/last.fm profile don't work
 def markUser(userid, reason):
 	with open('errorlog.txt', 'a') as errorlog:
-		errorlog.write("\nMarked user %s. Reason: %s" % (userid, reason))
+		errorlog.write("\nMarked user %s for deletion. Reason: %s" % (userid, reason))
 	getDatabase().users.update(
 		{'userid': userid},
 		{
@@ -38,11 +38,10 @@ def markUser(userid, reason):
 			}
 		})
 
-
 #adds user to json list
 def createUser(userid, network, lfm_user, lfm_pwd):
 
-	if checkExistingUser(userid, getDatabase()):
+	if checkExistingUser(userid):
 		print "User already exists!"
 		return "EXISTS"
 
@@ -65,14 +64,14 @@ def createUser(userid, network, lfm_user, lfm_pwd):
 #updates user's 'lastchecked' element, mostly copied from deleteUser
 def updateLastChecked(userid):
 	getDatabase().users.update(
-			{'userid': userid},
-			{
-				'$set':{
-						'lastchecked': datetime.now().strftime(date_format)
-				}
-			})
+		{'userid': userid},
+		{
+			'$set':{
+					'lastchecked': datetime.now().strftime(date_format)
+			}
+		})
 
 #initialize MongoClient object and return database
 def getDatabase():
 	client = MongoClient()
-	return client.db
+	return client.userlist

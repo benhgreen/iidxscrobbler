@@ -127,7 +127,7 @@ def songLookup(songdb, songid):
 	return songdb[songid]
 
 def generateCookies():
-	for network in ['ps', 'pw']:
+	for network in ['ps']: #, 'pw']:
 		client = clientGen()
 		client.connect()
 		queryLatch = latch.latch(1)
