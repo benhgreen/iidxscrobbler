@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <title>iidx.fm</title>
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel=
+    "stylesheet">
+    <link href=
+    "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"
+    rel="stylesheet">
+    <link href="http://getbootstrap.com/examples/cover/cover.css" rel=
+    "stylesheet">
+    <script src=
+    "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <a href="https://github.com/benhgreen"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/c6286ade715e9bea433b4705870de482a654f78a/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f77686974655f6666666666662e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_white_ffffff.png"></a>
+    <div class="site-wrapper">
+        <div class="site-wrapper-inner">
+			<h1>&nbsp;</h1>
+            <h1>iidx.fm</h1>
+
+
+            <div class="cover-container">
+                <div class="inner cover">
+                    <p class="lead">
+                    </p>
+
+
+                    <div class="center-block">
+                        <div class="row">
+                            <form action="" class="form-inline" id="signup"
+                            method="post" name="signup">
+                                <div class="col-md-3">
+                                    <div class="controls">
+                                        <div class=
+                                        "form-group {% if form.userid.errors %} has-error{% endif %}">
+                                        {{ form.hidden_tag() }}
+
+                                            <p><label class="control-label"
+                                            for="userid">Please enter your
+                                            PW/PS user ID:</label> {{
+                                            form.userid(size=9,
+                                            class="form-control",
+                                            placeholder="0000-0000") }}<br></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-3">
+                                    <div class="controls">
+                                        <p><label class="control-label" for=
+                                        "network">Please select your
+                                        network:</label> {{
+                                        form.network(class="form-control")
+                                        }}<br></p>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-3">
+                                    <div class="controls">
+                                        <div class=
+                                        "form-group {% if form.lastfmuser.errors %} has-error{% endif %}">
+                                        <p><label class="control-label"
+                                            for="lastfmuser">Please enter your
+                                            last.fm username:</label> {{
+                                            form.lastfmuser(size=15,
+                                            class="form-control",
+                                            placeholder="slake") }}<br></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-3">
+                                    <div class="controls">
+                                        <div class=
+                                        "form-group {% if form.lastfmpwd.errors %} has-error{% endif %}">
+                                        <p><label class="control-label"
+                                            for="lastfmpwd">Please enter your
+                                            last.fm password:</label> {{
+                                            form.lastfmpwd(class="form-control",
+                                            placeholder="password" ) }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <p><input class="btn btn-lg btn-default" type=
+                                "submit" value="Sign Up">
+                                </p>
+                                {% with messages = get_flashed_messages() %} {%
+                                if messages %} {% for message in messages %}
+
+                                <div class="alert alert-info">
+                                    <button class="close" data-dismiss="alert"
+                                    type="button">&times;</button> {{ message
+                                    }}
+                                </div>
+                                {% endfor %} {% endif %} {% endwith %}
+
+                                <h5>Unsubscribe <a href=
+                                "http://www.last.fm/settings/applications"
+                                style=
+                                "text-decoration: underline">here</a>.</h5>
+
+
+                                <div class="mastfoot">
+                                    <div class="inner">
+                                        <p>Made by <a href=
+                                        "http://twitter.com/benhgreen">@benhgreen</a>.</p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src=
+    "https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> <script src="../../dist/js/bootstrap.min.js"></script> <script src="../../assets/js/docs.min.js"></script> <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+</body>
+</html>

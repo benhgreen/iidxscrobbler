@@ -58,9 +58,9 @@ if __name__ == '__main__':
 	#generate master song lists
 	musiclist = {}
 	musiclist['ps'] = refreshSongList('ps')
-	#musiclist['pw'] = refreshSongList('pw')
+	musiclist['pw'] = refreshSongList('pw')
 
-	for user in getDatabase().users.find({'status': 'working', 'network': 'ps'}):
+	for user in getDatabase().users.find({'status': 'working'}):
 		#make sure last.fm still works for this user
 		try:
 			lfm_object = pylast.LastFMNetwork(api_key = LFM_APIKEY, api_secret = LFM_SECRET, session_key = user['lfm_session'])

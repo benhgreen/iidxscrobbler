@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-	
 
 import sys, httplib, urllib, importio, latch, string
-from security import *
+from secrets import *
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -127,7 +127,7 @@ def songLookup(songdb, songid):
 	return songdb[songid]
 
 def generateCookies():
-	for network in ['ps']: #, 'pw']:
+	for network in ['ps','pw']:
 		client = clientGen()
 		client.connect()
 		queryLatch = latch.latch(1)

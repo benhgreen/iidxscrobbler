@@ -22,10 +22,12 @@ def sessionKeyGen(lfm_user, lfm_pwd):
 		return getattr(lfm_object, 'session_key')
 
 #returns true if user already exists in the database
-def checkExistingUser(userid):
-	if(getDatabase().users.find_one({"userid": userid})) != None:
+def checkExistingUser(userid, network):
+	if(getDatabase().users.find_one({"userid": userid, "network": network})) != None:
 		return True
-
+	else:
+		return False
+		
 #mark user for later deletion if calls to their PS/PW/last.fm profile don't work
 def markUser(userid, reason):
 	with open('errorlog.txt', 'a') as errorlog:
@@ -41,10 +43,6 @@ def markUser(userid, reason):
 #adds user to json list
 def createUser(userid, network, lfm_user, lfm_pwd):
 
-	if checkExistingUser(userid):
-		print "User already exists!"
-		return "EXISTS"
-
 	#verify last.fm credentials
 	lfm_session = sessionKeyGen(lfm_user, lfm_pwd)
 	if(lfm_session) == "INVALID":
@@ -57,6 +55,7 @@ def createUser(userid, network, lfm_user, lfm_pwd):
 				"userid": userid,
 				"network": network,
 				"lfm_session": lfm_session,
+				"lfm_username": lfm_user,
 				"lastchecked": datetime.now().strftime(date_format),
 				"status": "working"
 			})
