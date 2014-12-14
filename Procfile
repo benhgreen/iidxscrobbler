@@ -1,1 +1,1 @@
-web: app/webinterface.py
+web: python app/webinterface.py
