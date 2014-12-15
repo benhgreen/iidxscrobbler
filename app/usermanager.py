@@ -13,7 +13,7 @@ date_format = "%d %b %Y %X"
 def sessionKeyGen(lfm_user, lfm_pwd):
 	global lfm_object
 	try:
-		lfm_object = pylast.LastFMNetwork(api_key = LFM_APIKEY, api_secret = LFM_SECRET, username = LFM_USER, password_hash = pylast.md5(lfm_pwd))
+		lfm_object = pylast.LastFMNetwork(api_key = LFM_APIKEY, api_secret = LFM_SECRET, username = lfm_user, password_hash = pylast.md5(lfm_pwd))
 	except pylast.WSError:
 		print("Invalid username/password.") 
 		return "INVALID"
