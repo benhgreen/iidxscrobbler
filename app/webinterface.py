@@ -14,5 +14,4 @@ def signup():
                            form=form)
 
 if __name__ == '__main__':
-    app.debug = False
-    app.run()
+    app.run(debug=False, host='0.0.0.0')
