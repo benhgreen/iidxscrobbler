@@ -3,7 +3,6 @@ import sys, json
 from datetime import datetime
 from secrets import *
 from pymongo import MongoClient
-sys.path.append("../deps/")
 import pylast
 
 reload(sys)

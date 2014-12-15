@@ -4,8 +4,6 @@ import sys, json, secrets, threading, pymongo
 from datetime import datetime
 from functions import *
 from usermanager import *
-
-sys.path.append("../deps/")
 import pylast
 
 reload(sys)
