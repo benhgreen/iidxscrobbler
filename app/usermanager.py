@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-	
-import sys, json
+import sys, json, pylast
 from datetime import datetime
 from secrets import *
 from pymongo import MongoClient
-import pylast
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
