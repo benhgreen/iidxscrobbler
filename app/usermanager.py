@@ -70,5 +70,5 @@ def updateLastChecked(userid):
 
 #initialize MongoClient object and return database
 def getDatabase():
-	client = MongoClient(os.environ('MONGODB_URL'))
+	client = MongoClient(os.environ.get('MONGODB_URL'))
 	return client.userlist
