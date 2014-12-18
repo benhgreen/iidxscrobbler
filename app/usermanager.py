@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-	
-import sys, json, pylast
+import sys, json, pylast, os
 from datetime import datetime
 from secrets import *
 from pymongo import MongoClient
@@ -70,5 +70,5 @@ def updateLastChecked(userid):
 
 #initialize MongoClient object and return database
 def getDatabase():
-	client = MongoClient()
+	client = MongoClient(os.environ('MONGODB_URL'))
 	return client.userlist
