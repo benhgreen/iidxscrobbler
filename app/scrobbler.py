@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-	
 
-import sys, json, secrets, threading, pymongo
+import sys, json, secrets, threading, pymongo, os, time
 from datetime import datetime
 from functions import *
 from usermanager import *
@@ -11,6 +11,7 @@ sys.setdefaultencoding("utf-8")
 
 #set date formatting to create datetime objects
 date_format = "%d %b %Y %X"
+os.environ['TZ'] = 'America/New_York'
 
 def iidxScrobble(user, lfm_object):
 	#make this method run every n seconds
@@ -43,9 +44,9 @@ def iidxScrobble(user, lfm_object):
 			songinfo = songLookup(stripSongURL(song, user["network"]))
 			artist_name = songinfo["artist"]
 			song_name = songinfo["title"]
-			submit_time = int((songtime - datetime(1970,1,1)).total_seconds() + 18000)
+			submit_time = int((songtime - datetime(1970,1,1)).total_seconds())
 
-			print "		scrobbling %s: %s for player %s" % (song_name, song['timestamp'], user['userid'])
+			print "		scrobbling %s: %s for player %s" % (song_name, submit_time, user['userid'])
 			lfm_object.scrobble(artist=artist_name, title=song_name, timestamp=submit_time)
 
 	#finally, update user's 'lastchecked' element
