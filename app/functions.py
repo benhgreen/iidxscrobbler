@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-	
 
-import sys, httplib, urllib, importio, latch, string
+import sys, httplib, urllib, importio, latch, string, pymongo
 from secrets import *
 
 reload(sys)
@@ -92,22 +92,26 @@ def scrapeData(userid, network):
 # refreshes song list and converts to dictionary where key is songid
 # and value is tuple (title, artist)
 def refreshSongList(network):
+	database = getDatabase()
 
-	songlist = {'songid' : 'songinfo'}
 	raw_data = scrapeData('refresh_music', network)
+	print raw_data
 
 	for song in raw_data:
-
 		songid = stripSongURL(song, network)
+		title = song["song_info/_text"]
 		#strip out stupid leggendaria suffix
 		if "†LEGGENDARIA" in song["song_info/_text"]:
-			songinfo = (string.replace(song["song_info/_text"], "†LEGGENDARIA", ""), song["artist"])
-		else:
-			songinfo = (song["song_info/_text"], song["artist"])
+			title = song["song_info/_text"].replace("†LEGGENDARIA", "")
 
-		songlist[songid] = songinfo
+		print title
 
-	return songlist
+		database.musiclist.insert(
+				{
+					"songid": songid,
+					"title": title,
+					"artist": song["artist"]
+				})
 
 
 #strip song url to its numerical id
@@ -123,8 +127,8 @@ def stripSongURL(song, network):
 
 
 #return song info from main data bank
-def songLookup(songdb, songid):
-	return songdb[songid]
+def songLookup(songid):
+	return getDatabase().musiclist.find_one({"songid": songid})
 
 def generateCookies():
 	for network in ['ps','pw']:
@@ -186,3 +190,15 @@ def generateCookies():
 		queryLatch.await()
 		client.disconnect()
 		print cookies
+
+def getDatabase():
+	client = pymongo.MongoClient()
+	return client.userlist
+
+if __name__ == '__main__':
+	generateCookies()
+
+	refreshSongList('pw')
+	refreshSongList('ps')
+
+	print songLookup('21102')['title']

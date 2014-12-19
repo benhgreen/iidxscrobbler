@@ -12,7 +12,7 @@ sys.setdefaultencoding("utf-8")
 #set date formatting to create datetime objects
 date_format = "%d %b %Y %X"
 
-def iidxScrobble(user, lfm_object, musiclist):
+def iidxScrobble(user, lfm_object):
 	#make this method run every n seconds
 	
 	#get user's last 50 played songs from the server
@@ -40,11 +40,13 @@ def iidxScrobble(user, lfm_object, musiclist):
 			pass
 		#if we've reached this point, this song should be scrobbled!
 		else:
-			(song_name, artist_name) = songLookup(musiclist, stripSongURL(song, user["network"]))
+			songinfo = songLookup(stripSongURL(song, user["network"]))
+			artist_name = songinfo["artist"]
+			song_name = songinfo["title"]
 			submit_time = int((songtime - datetime(1970,1,1)).total_seconds())
 
 			print "		scrobbling %s: %s for player %s" % (song_name, song['timestamp'], user['userid'])
-			#lfm_object.scrobble(artist=artist_name, title=song_name, timestamp=submit_time)
+			lfm_object.scrobble(artist=artist_name, title=song_name, timestamp=submit_time)
 
 	#finally, update user's 'lastchecked' element
 	updateLastChecked(user['userid'])
@@ -52,11 +54,6 @@ def iidxScrobble(user, lfm_object, musiclist):
 if __name__ == '__main__':
 	#generate cookies
 	generateCookies()
-
-	#generate master song lists
-	musiclist = {}
-	musiclist['ps'] = refreshSongList('ps')
-	musiclist['pw'] = refreshSongList('pw')
 
 	for user in getDatabase().users.find({'status': 'working'}):
 		#make sure last.fm still works for this user
@@ -67,4 +64,4 @@ if __name__ == '__main__':
 			markUser(user['userid'], 'LASTFM ERROR')
 		#if it works, go ahead and check the tracklist
 		else:
-			iidxScrobble(user, lfm_object, musiclist[user['network']])
+			iidxScrobble(user, lfm_object)
