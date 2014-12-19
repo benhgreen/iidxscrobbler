@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-	
 
 import sys, httplib, urllib, importio, latch, string, pymongo
+from usermanager import getDatabase
 from secrets import *
 
 reload(sys)
@@ -95,7 +96,6 @@ def refreshSongList(network):
 	database = getDatabase()
 
 	raw_data = scrapeData('refresh_music', network)
-	print raw_data
 
 	for song in raw_data:
 		songid = stripSongURL(song, network)
@@ -103,8 +103,6 @@ def refreshSongList(network):
 		#strip out stupid leggendaria suffix
 		if "†LEGGENDARIA" in song["song_info/_text"]:
 			title = song["song_info/_text"].replace("†LEGGENDARIA", "")
-
-		print title
 
 		database.musiclist.insert(
 				{
@@ -191,14 +189,8 @@ def generateCookies():
 		client.disconnect()
 		print cookies
 
-def getDatabase():
-	client = pymongo.MongoClient()
-	return client.userlist
-
 if __name__ == '__main__':
 	generateCookies()
 
 	refreshSongList('pw')
 	refreshSongList('ps')
-
-	print songLookup('21102')['title']
