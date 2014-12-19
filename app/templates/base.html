@@ -20,16 +20,9 @@
     "https://s3.amazonaws.com/github/ribbons/forkme_left_white_ffffff.png" src=
     "https://camo.githubusercontent.com/c6286ade715e9bea433b4705870de482a654f78a/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f77686974655f6666666666662e706e67"
     style="position: absolute; top: 0; left: 0; border: 0;"></a>
-
-    <div class="site-wrapper">
-        <div class="site-wrapper-inner">
-            <h1>&nbsp;</h1>
+    <br>
 
 
-            <h1>iidx.fm</h1>
-
-
-            <h1>&nbsp;</h1>
 
 
             <div class="cover-container">
@@ -39,7 +32,11 @@
 
 
                     <div class="center-block">
+
                         <div class="row" style="bottom: 0px; width: 100%;">
+                        <h1>&nbsp;</h1>
+                        <h1>iidx.fm</h1>
+                        <h1>&nbsp;</h1>
                             <form action="" class="form-inline" id="signup"
                             method="post" name="signup">
                                 <div class="col-md-3">
@@ -49,8 +46,10 @@
                                         {{ form.hidden_tag() }}
 
                                             <p><label class="control-label"
-                                            for="userid">PW/PS user
-                                            ID:</label> {{ form.userid(size=9,
+                                            for="userid">PW/PS userID:</label>
+                                            <br>
+                                            </p>
+                                            <p> {{ form.userid(size=10,
                                             class="form-control",
                                             placeholder="0000-0000") }}</p>
                                         </div>
@@ -62,6 +61,9 @@
                                     <div class="controls">
                                         <p><label class="control-label" for=
                                         "network">Select network:</label>
+                                        <br>
+                                        </p>
+                                        <p>
                                         {{ form.network(class="form-control")
                                         }}<br></p>
                                     </div>
@@ -74,8 +76,11 @@
                                         "form-group {% if form.lastfmuser.errors %} has-error{% endif %}">
                                         <p><label class="control-label"
                                             for="lastfmuser">last.fm
-                                            username:</label> {{
-                                            form.lastfmuser(size=15,
+                                            username:</label>
+                                            <br>
+                                            </p>
+                                            <p> {{
+                                            form.lastfmuser(size=10,
                                             class="form-control",
                                             placeholder="slake") }}</p>
                                         </div>
@@ -89,16 +94,20 @@
                                         "form-group {% if form.lastfmpwd.errors %} has-error{% endif %}">
                                         <p><label class="control-label"
                                             for="lastfmpwd">last.fm
-                                            password:</label> {{
-                                            form.lastfmpwd(class="form-control",
+                                            password:</label>
+                                            <br>
+                                            </p>
+                                            <p>
+                                            {{
+                                            form.lastfmpwd(size=10, class="form-control",
                                             placeholder="password" ) }}</p>
                                         </div>
                                     </div>
                                 </div>
 
-                        <h4>&nbsp;</h4>
+                        <h1>&nbsp;</h1>
                         <div class="row">
-                            <p><input class="btn btn-lg btn-default" type=
+                            <p><input class="btn btn-lg btn-primary" type=
                             "submit" value="Sign Up">
                             </p>
                             {% with messages = get_flashed_messages() %} {% if
