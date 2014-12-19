@@ -1,7 +1,7 @@
 import logging, json, importio, latch, os
 
 def clientGen():
-	return importio.importio(user_id=os.environ('IIO_USER'), api_key=os.environ('IIO_API'), host="https://query.import.io")
+	return importio.importio(user_id=os.environ.get('IIO_USER'), api_key=os.environ.get('IIO_API'), host="https://query.import.io")
 
 LFM_APIKEY = os.environ.get('LFM_API')
 LFM_SECRET = os.environ.get('LFM_SECRET')
