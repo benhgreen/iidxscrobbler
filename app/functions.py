@@ -129,7 +129,7 @@ def songLookup(songid):
 	return getDatabase().musiclist.find_one({"songid": songid})
 
 def generateCookies():
-	for network in ['ps','pw']:
+	for network in ['ps']:
 		client = clientGen()
 		client.connect()
 		queryLatch = latch.latch(1)

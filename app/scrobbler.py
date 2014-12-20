@@ -55,7 +55,7 @@ if __name__ == '__main__':
 	#generate cookies
 	generateCookies()
 
-	for user in getDatabase().users.find({'status': 'working'}):
+	for user in getDatabase().users.find({'status': 'working', 'network': 'ps'}):
 		#make sure last.fm still works for this user
 		try:
 			lfm_object = pylast.LastFMNetwork(api_key = LFM_APIKEY, api_secret = LFM_SECRET, session_key = user['lfm_session'])
