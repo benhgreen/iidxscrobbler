@@ -22,126 +22,130 @@
 
 
     <div class="cover-container">
-        <div class="center-block">
-            <div class="row" align="center">
-                <h1>&nbsp;</h1>
+        <div class="row">
+            <h4>&nbsp;</h4>
 
 
-                <h1>iidx.fm</h1>
+            <h1>iidx.fm</h1>
+            <br>
 
 
-                <h3>&nbsp;</h3>
+            <div class="col-md-12">
+                <p>This web app will scrobble tracks played from your PW/PS
+                profile to your Last.fm account.<br></p>
+                <br>
 
 
-               <p>This web app will scrobble tracks played from your PW/PS
-                profile to your Last.fm account.<br>
-
-               Tracks can take up to 30 minutes to scrobble.<br>
-
-               Please make sure your player score history is public.<br>
-
-               Your Last.fm password is used to generate a session key and
-                is immediately discarded.</p>
-
-               <h1>&nbsp;</h1>
-
-
-                <form action="" class="form-inline" id="signup" method="post"
-                name="signup">
-                    <div class="col-md-3">
-                        <div class="controls">
-                            <div class=
-                            "form-group {% if form.userid.errors %} has-error{% endif %}">
-                            {{ form.hidden_tag() }}
-
-                                <p><label class="control-label" for=
-                                "userid">PW/PS user ID:</label><br>
-                                </p>
+                <p class="text-left">• As this app is in beta, currently only
+                Programmed Sun Omnimix is actively supported. Programmed World
+                support will be implemented in the very near future - you can
+                sign up in advance if you like.<br>
+                <br>
+                • Tracks are scrobbled in batches, so it may take up to ~30
+                minutes before your tracks appear in Last.fm.<br>
+                <br>
+                • Please make sure your player score history is public.<br>
+                <br>
+                • Your Last.fm password is only used to generate a session key
+                and is immediately discarded.</p>
+                <br>
+            </div>
+        </div>
 
 
-                                <p>{{ form.userid(size=10,
-                                class="form-control", placeholder="0000-0000")
-                                }}</p>
-                            </div>
-                        </div>
-                    </div>
+        <div class="row" style="text-align: center">
+            <form action="" class="form-inline" id="signup" method="post" name=
+            "signup">
+                <div class="col-md-3">
+                    <div class="controls">
+                        <div class=
+                        "form-group {% if form.userid.errors %} has-error{% endif %}">
+                        {{ form.hidden_tag() }}
 
-
-                    <div class="col-md-3">
-                        <div class="controls">
-                            <p><label class="control-label" for=
-                            "network">Select network:</label><br>
+                            <p><label class="control-label" for="userid">PW/PS
+                            user ID:</label><br>
                             </p>
 
 
-                            <p>{{ form.network(class="form-control") }}<br></p>
+                            <p>{{ form.userid(size=10, class="form-control",
+                            placeholder="0000-0000") }}</p>
                         </div>
                     </div>
+                </div>
 
 
-                    <div class="col-md-3">
-                        <div class="controls">
-                            <div class=
-                            "form-group {% if form.lastfmuser.errors %} has-error{% endif %}">
-                            <p><label class="control-label" for="lastfmuser">
-                                Last.fm username:</label><br>
-                                </p>
-
-
-                                <p>{{ form.lastfmuser(size=10,
-                                class="form-control", placeholder="slake")
-                                }}</p>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-3">
-                        <div class="controls">
-                            <div class=
-                            "form-group {% if form.lastfmpwd.errors %} has-error{% endif %}">
-                            <p><label class="control-label" for="lastfmpwd">
-                                Last.fm password:</label><br>
-                                </p>
-
-
-                                <p>{{ form.lastfmpwd(size=10,
-                                class="form-control", placeholder="password" )
-                                }}</p>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <h4>&nbsp;</h4>
-
-
-                    <div class="row">
-                        <p><input class="btn btn-lg btn-primary" type="submit"
-                        value="Register">
+                <div class="col-md-3">
+                    <div class="controls">
+                        <p><label class="control-label" for="network">Select
+                        network:</label><br>
                         </p>
-                        {% with messages = get_flashed_messages() %} {% if
-                        messages %} {% for message in messages %}
 
-                        <div class="alert alert-info">
-                            <button class="close" data-dismiss="alert" type=
-                            "button">&times;</button> {{ message }}
-                        </div>
-                        {% endfor %} {% endif %} {% endwith %}
 
-                        <h5>Unsubscribe <a href=
-                        "http://www.last.fm/settings/applications" style=
-                        "text-decoration: underline">here</a>.</h5>
+                        <p>{{ form.network(class="form-control") }}<br></p>
                     </div>
+                </div>
 
 
-                    <div class="mastfoot">
-                        <div class="inner">
-                            <p>Made by <a href=
-                            "http://twitter.com/benhgreen">@benhgreen</a>.</p>
+                <div class="col-md-3">
+                    <div class="controls">
+                        <div class=
+                        "form-group {% if form.lastfmuser.errors %} has-error{% endif %}">
+                        <p><label class="control-label" for=
+                        "lastfmuser">Last.fm username:</label><br>
+                            </p>
+
+
+                            <p>{{ form.lastfmuser(size=10,
+                            class="form-control", placeholder="slake") }}</p>
                         </div>
                     </div>
-                </form>
+                </div>
+
+
+                <div class="col-md-3">
+                    <div class="controls">
+                        <div class=
+                        "form-group {% if form.lastfmpwd.errors %} has-error{% endif %}">
+                        <p><label class="control-label" for="lastfmpwd">Last.fm
+                        password:</label><br>
+                            </p>
+
+
+                            <p>{{ form.lastfmpwd(size=10, class="form-control",
+                            placeholder="password" ) }}</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <h5>&nbsp;</h5>
+
+
+                <div class="row">
+                    <p><input class="btn btn-lg btn-primary" type="submit"
+                    value="Register">
+                    </p>
+                    {% with messages = get_flashed_messages() %} {% if messages
+                    %} {% for message in messages %}
+
+                    <div class="alert alert-info">
+                        <button class="close" data-dismiss="alert" type=
+                        "button">&times;</button> {{ message }}
+                    </div>
+                    {% endfor %} {% endif %} {% endwith %}
+
+                    <h5>Unsubscribe <a href=
+                    "http://www.last.fm/settings/applications" style=
+                    "text-decoration: underline">here</a>.</h5>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="mastfoot">
+            <div class="inner" style="text-align: center">
+                <p>Made by <a href=
+                "http://twitter.com/benhgreen">@benhgreen</a>.</p>
             </div>
         </div>
     </div>
