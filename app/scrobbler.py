@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-	
 
 import sys, json, secrets, threading, pymongo
-from datetime import datetime
+from datetime import datetime, timedelta
 from functions import *
 from usermanager import *
 import pylast
@@ -27,7 +27,7 @@ def iidxScrobble(user, lfm_object):
 	for song in playerlist:
 
 		#make sure the song hasn't already been checked
-		songtime = datetime.strptime(song['timestamp'], date_format)
+		songtime = datetime.strptime(song['timestamp'], date_format)+datetime.timedelta(hours=5)
 		lastchecked = datetime.strptime(user['lastchecked'], date_format)
 
 		#if we reach our 'lastchecked' time, then obviously there's no use checking the 
