@@ -27,6 +27,8 @@ def iidxScrobble(user, lfm_object):
 	for song in playerlist:
 
 		#make sure the song hasn't already been checked
+		
+		#this time is incremented by 5 hours to compensate for being in EST
 		songtime = datetime.strptime(song['timestamp'], date_format)+timedelta(hours=5)
 		lastchecked = datetime.strptime(user['lastchecked'], date_format)
 

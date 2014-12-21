@@ -2,152 +2,152 @@
 
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta content="IE=edge" http-equiv="X-UA-Compatible">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
+	<meta charset="utf-8">
+	<meta content="IE=edge" http-equiv="X-UA-Compatible">
+	<meta content="width=device-width, initial-scale=1" name="viewport">
 
-    <title>iidx.fm</title>
-    <link href="static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="static/css/bootstrap-theme.min.css" rel="stylesheet">
-    <link href="static/css/cover.css" rel="stylesheet">
-    <link href="static/js/bootstrap.min.js" rel="stylesheet">
+	<title>iidx.fm</title>
+	<link href="static/css/bootstrap.min.css" rel="stylesheet">
+	<link href="static/css/bootstrap-theme.min.css" rel="stylesheet">
+	<link href="static/css/cover.css" rel="stylesheet">
+	<link href="static/js/bootstrap.min.js" rel="stylesheet">
 </head>
 
 <body>
-    <a href="https://github.com/benhgreen"><img alt="Fork me on GitHub"
-    data-canonical-src=
-    "https://s3.amazonaws.com/github/ribbons/forkme_left_white_ffffff.png" src=
-    "https://camo.githubusercontent.com/c6286ade715e9bea433b4705870de482a654f78a/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f77686974655f6666666666662e706e67"
-    style="position: absolute; top: 0; left: 0; border: 0;"></a><br>
+	<a href="https://github.com/benhgreen"><img alt="Fork me on GitHub"
+	data-canonical-src=
+	"https://s3.amazonaws.com/github/ribbons/forkme_left_white_ffffff.png" src=
+	"https://camo.githubusercontent.com/c6286ade715e9bea433b4705870de482a654f78a/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f77686974655f6666666666662e706e67"
+	style="position: absolute; top: 0; left: 0; border: 0;"></a><br>
 
 
-    <div class="cover-container">
-        <div class="row">
-            <h4>&nbsp;</h4>
+	<div class="cover-container">
+		<div class="row">
+			<h4>&nbsp;</h4>
 
 
-            <h1>iidx.fm</h1>
-            <br>
+			<h1>iidx.fm</h1>
+			<br>
 
 
-            <div class="col-md-12">
-                <p>This web app will scrobble tracks played from your PW/PS
-                profile to your Last.fm account.<br></p>
-                <br>
+			<div class="col-md-12">
+				<p>This web app will scrobble tracks played from your PW/PS
+				profile to your Last.fm account.<br></p>
+				<br>
 
 
-                <p class="text-left">• As this app is in beta, currently only
-                Programmed Sun Omnimix is actively supported. Programmed World
-                support will be implemented in the very near future - you can
-                sign up in advance if you like.<br>
-                <br>
-                • Tracks are scrobbled in batches, so it may take up to ~30
-                minutes before your tracks appear in Last.fm.<br>
-                <br>
-                • Please make sure your player score history is public.<br>
-                <br>
-                • Your Last.fm password is only used to generate a session key
-                and is immediately discarded.</p>
-                <br>
-            </div>
-        </div>
+				<p class="text-left">• As this app is in beta, currently only
+				Programmed Sun Omnimix is actively supported. Programmed World
+				support will be implemented in the very near future - you can
+				sign up in advance if you like.<br>
+				<br>
+				• Tracks are scrobbled in batches, so it may take up to ~30
+				minutes before your tracks appear in Last.fm.<br>
+				<br>
+				• Please make sure your player score history is public.<br>
+				<br>
+				• Your Last.fm password is only used to generate a session key
+				and is immediately discarded.</p>
+				<br>
+			</div>
+		</div>
 
 
-        <div class="row" style="text-align: center">
-            <form action="" class="form-inline" id="signup" method="post" name=
-            "signup">
-                <div class="col-md-3">
-                    <div class="controls">
-                        <div class=
-                        "form-group {% if form.userid.errors %} has-error{% endif %}">
-                        {{ form.hidden_tag() }}
+		<div class="row" style="text-align: center">
+			<form action="" class="form-inline" id="signup" method="post" name=
+			"signup">
+				<div class="col-md-3">
+					<div class="controls">
+						<div class=
+						"form-group {% if form.userid.errors %} has-error{% endif %}">
+						{{ form.hidden_tag() }}
 
-                            <p><label class="control-label" for="userid">PW/PS
-                            user ID:</label><br>
-                            </p>
-
-
-                            <p>{{ form.userid(size=10, class="form-control",
-                            placeholder="0000-0000") }}</p>
-                        </div>
-                    </div>
-                </div>
+							<p><label class="control-label" for="userid">PW/PS
+							user ID:</label><br>
+							</p>
 
 
-                <div class="col-md-3">
-                    <div class="controls">
-                        <p><label class="control-label" for="network">Select
-                        network:</label><br>
-                        </p>
+							<p>{{ form.userid(size=10, class="form-control",
+							placeholder="0000-0000") }}</p>
+						</div>
+					</div>
+				</div>
 
 
-                        <p>{{ form.network(class="form-control") }}<br></p>
-                    </div>
-                </div>
+				<div class="col-md-3">
+					<div class="controls">
+						<p><label class="control-label" for="network">Select
+						network:</label><br>
+						</p>
 
 
-                <div class="col-md-3">
-                    <div class="controls">
-                        <div class=
-                        "form-group {% if form.lastfmuser.errors %} has-error{% endif %}">
-                        <p><label class="control-label" for=
-                        "lastfmuser">Last.fm username:</label><br>
-                            </p>
+						<p>{{ form.network(class="form-control") }}<br></p>
+					</div>
+				</div>
 
 
-                            <p>{{ form.lastfmuser(size=10,
-                            class="form-control", placeholder="slake") }}</p>
-                        </div>
-                    </div>
-                </div>
+				<div class="col-md-3">
+					<div class="controls">
+						<div class=
+						"form-group {% if form.lastfmuser.errors %} has-error{% endif %}">
+						<p><label class="control-label" for=
+						"lastfmuser">Last.fm username:</label><br>
+							</p>
 
 
-                <div class="col-md-3">
-                    <div class="controls">
-                        <div class=
-                        "form-group {% if form.lastfmpwd.errors %} has-error{% endif %}">
-                        <p><label class="control-label" for="lastfmpwd">Last.fm
-                        password:</label><br>
-                            </p>
+							<p>{{ form.lastfmuser(size=10,
+							class="form-control", placeholder="slake") }}</p>
+						</div>
+					</div>
+				</div>
 
 
-                            <p>{{ form.lastfmpwd(size=10, class="form-control",
-                            placeholder="password" ) }}</p>
-                        </div>
-                    </div>
-                </div>
+				<div class="col-md-3">
+					<div class="controls">
+						<div class=
+						"form-group {% if form.lastfmpwd.errors %} has-error{% endif %}">
+						<p><label class="control-label" for="lastfmpwd">Last.fm
+						password:</label><br>
+							</p>
 
 
-                <h5>&nbsp;</h5>
+							<p>{{ form.lastfmpwd(size=10, class="form-control",
+							placeholder="password" ) }}</p>
+						</div>
+					</div>
+				</div>
 
 
-                <div class="row">
-                    <p><input class="btn btn-lg btn-primary" type="submit"
-                    value="Register">
-                    </p>
-                    {% with messages = get_flashed_messages() %} {% if messages
-                    %} {% for message in messages %}
-
-                    <div class="alert alert-info">
-                        <button class="close" data-dismiss="alert" type=
-                        "button">&times;</button> {{ message }}
-                    </div>
-                    {% endfor %} {% endif %} {% endwith %}
-
-                    <h5>Unsubscribe <a href=
-                    "http://www.last.fm/settings/applications" style=
-                    "text-decoration: underline">here</a>.</h5>
-                </div>
-            </form>
-        </div>
+				<h5>&nbsp;</h5>
 
 
-        <div class="mastfoot">
-            <div class="inner" style="text-align: center">
-                <p>Made by <a href=
-                "http://twitter.com/benhgreen">@benhgreen</a>.</p>
-            </div>
-        </div>
-    </div>
+				<div class="row">
+					<p><input class="btn btn-lg btn-primary" type="submit"
+					value="Register">
+					</p>
+					{% with messages = get_flashed_messages() %} {% if messages
+					%} {% for message in messages %}
+
+					<div class="alert alert-info">
+						<button class="close" data-dismiss="alert" type=
+						"button">&times;</button> {{ message }}
+					</div>
+					{% endfor %} {% endif %} {% endwith %}
+
+					<h5>Unsubscribe <a href=
+					"http://www.last.fm/settings/applications" style=
+					"text-decoration: underline">here</a>.</h5>
+				</div>
+			</form>
+		</div>
+
+
+		<div class="mastfoot">
+			<div class="inner" style="text-align: center">
+				<p>Made by <a href=
+				"http://twitter.com/benhgreen">@benhgreen</a>.</p>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

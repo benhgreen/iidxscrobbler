@@ -9,13 +9,13 @@ from forms import SignupForm
 
 @app.route('/', methods=['GET', 'POST'])
 def signup():
-    form = SignupForm()
-    if form.validate_on_submit():
-    	flash('Registration successful.')
-    	return redirect('/')
-    return render_template('base.html', 
-                           title='Sign Up',
-                           form=form)
+		form = SignupForm()
+		if form.validate_on_submit():
+			flash('Registration successful.')
+			return redirect('/')
+		return render_template('base.html', 
+													 title='Sign Up',
+													 form=form)
 
 if __name__ == '__main__':
 	http_server = HTTPServer(WSGIContainer(app))

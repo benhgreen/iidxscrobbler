@@ -129,6 +129,8 @@ def songLookup(songid):
 	return getDatabase().musiclist.find_one({"songid": songid})
 
 def generateCookies():
+	#makes a small to import.io to just login and return a cookie without loading
+	#anything else
 	for network in ['ps']:
 		client = clientGen()
 		client.connect()
@@ -189,6 +191,8 @@ def generateCookies():
 		client.disconnect()
 		print cookies
 
+#makes this file double as a convenient way to refresh song lists from the server
+#after wiping the database manually
 if __name__ == '__main__':
 	generateCookies()
 
