@@ -52,6 +52,8 @@ body {
 .cover-container {
   margin-right: auto;
   margin-left: auto;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 /* Padding for spacing */
@@ -123,7 +125,7 @@ body {
  * Footer
  */
 
-.mastfoot {
+.mymastfoot {
   color: #999; /* IE8 proofing */
   color: rgba(255,255,255,.5);
 }

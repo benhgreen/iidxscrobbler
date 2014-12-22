@@ -1,7 +1,7 @@
 iidxscrobbler
 ================
 
-Scrobbler for Programmed World/Programmed Sun IIDX Networks.
+Scrobbler for various IIDX versions.
 
 * Uses import.io to scrape user's list of played songs
 * Identifies songs played to completion by checking clear status and miss count

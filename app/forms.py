@@ -5,7 +5,7 @@ from usermanager import *
 
 class SignupForm(Form):
 	userid = StringField('userid', validators=[DataRequired(), Regexp('^[0-9]{4}-[0-9]{4}$', message='Invalid network ID.')])
-	network = SelectField('network', choices=[('ps', 'PS (Omnimix)'), ('pw', 'PW (Pendual)')], validators=[DataRequired()])
+	network = SelectField('network', choices=[('ps', 'CS'), ('pw', 'AC')], validators=[DataRequired()])
 	lastfmuser = StringField('lastfmuser', validators=[DataRequired()])
 	lastfmpwd = PasswordField('lastfmpwd', validators=[DataRequired()])
 
