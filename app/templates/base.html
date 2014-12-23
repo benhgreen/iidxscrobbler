@@ -38,15 +38,6 @@
 					<li>Please make sure your player score history is
 					public.</li>
 
-
-					<li style="list-style: none"><br>
-					</li>
-
-
-					<li>Your Last.fm password is only used to generate a
-					session key and is immediately discarded.</li>
-
-
 					<li style="list-style: none"><br>
 					</li>
 
@@ -72,7 +63,7 @@
 		<div class="row" style="text-align: center">
 			<form action="" class="form-inline" id="signup" method="post" name=
 			"signup">
-				<div class="col-md-3">
+				<div class="col-md-4">
 					<div class="controls">
 						<div class=
 						"form-group {% if form.userid.errors %} has-error{% endif %}">
@@ -90,7 +81,7 @@
 				</div>
 
 
-				<div class="col-md-3">
+				<div class="col-md-4">
 					<div class="controls">
 						<p><label class="control-label" for="network">IIDX
 						version:</label><br>
@@ -102,7 +93,7 @@
 				</div>
 
 
-				<div class="col-md-3">
+				<div class="col-md-4">
 					<div class="controls">
 						<div class=
 						"form-group {% if form.lastfmuser.errors %} has-error{% endif %}">
@@ -118,28 +109,12 @@
 				</div>
 
 
-				<div class="col-md-3">
-					<div class="controls">
-						<div class=
-						"form-group {% if form.lastfmpwd.errors %} has-error{% endif %}">
-						<p><label class="control-label" for="lastfmpwd">Last.fm
-						password:</label><br>
-							</p>
-
-
-							<p>{{ form.lastfmpwd(size=10, class="form-control",
-							placeholder="password" ) }}</p>
-						</div>
-					</div>
-				</div>
-
-
 				<h5>&nbsp;</h5>
 
 
 				<div class="row">
-					<p><input class="btn btn-lg btn-primary" type="submit"
-					value="Register">
+					<p><input class="btn btn-lg btn-danger" type="submit"
+					value="Continue to Last.fm">
 					</p>
 					{% with messages = get_flashed_messages() %} {% if messages
 					%} {% for message in messages %}

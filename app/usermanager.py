@@ -8,17 +8,6 @@ reload(sys)
 sys.setdefaultencoding("utf-8")
 date_format = "%d %b %Y %X"
 
-#get lastfm session key for a username and password
-def sessionKeyGen(lfm_user, lfm_pwd):
-	global lfm_object
-	try:
-		lfm_object = pylast.LastFMNetwork(api_key = LFM_APIKEY, api_secret = LFM_SECRET, username = lfm_user, password_hash = pylast.md5(lfm_pwd))
-	except pylast.WSError:
-		print("Invalid username/password.") 
-		return "INVALID"
-	else:
-		return getattr(lfm_object, 'session_key')
-
 #returns true if user already exists in the database
 def checkExistingUser(userid, network):
 	if(getDatabase().users.find_one({"userid": userid, "network": network})) != None:
@@ -27,36 +16,27 @@ def checkExistingUser(userid, network):
 		return False
 		
 #mark user for later deletion if calls to their PS/PW/last.fm profile don't work
-def markUser(userid, reason):
+def markUser(user, reason):
 	with open('errorlog.txt', 'a') as errorlog:
-		errorlog.write("\nMarked user %s for deletion. Reason: %s" % (userid, reason))
+		errorlog.write("\nMarked user %s for deletion. Reason: %s" % (user['userid'], reason))
 	getDatabase().users.update(
-		{'userid': userid},
+		{'userid': user['userid'], 'network': user['network']},
 		{
 			'$set':{
 					'status': reason
 			}
 		})
 
-#adds user to json list
-def createUser(userid, network, lfm_user, lfm_pwd):
-
-	#verify last.fm credentials
-	lfm_session = sessionKeyGen(lfm_user, lfm_pwd)
-	if(lfm_session) == "INVALID":
-		#lastfm credentials are invalid, alert the user
-		pass
-	else:
-		#create user and insert into database
-		getDatabase().users.insert(
-			{
-				"userid": userid,
-				"network": network,
-				"lfm_session": lfm_session,
-				"lfm_username": lfm_user,
-				"lastchecked": datetime.now().strftime(date_format),
-				"status": "working"
-			})
+#adds user to database
+def createUser(userid, network, lfm_user):
+	getDatabase().users.insert(
+		{
+			"userid": userid,
+			"network": network,
+			"lfm_username": lfm_user,
+			"lastchecked": datetime.now().strftime(date_format),
+			"status": "initializeme"
+		})
 
 #updates user's 'lastchecked' element, mostly copied from deleteUser
 def updateLastChecked(userid):
@@ -72,3 +52,32 @@ def updateLastChecked(userid):
 def getDatabase():
 	client = MongoClient(os.environ.get('MONGODB_URL'))
 	return client.userlist
+
+#initialize last.fm session key for user
+def lfmInit(user):
+	#initialize lfm objects
+	url = user['lfm_url']
+	network = pylast.get_lastfm_network(os.environ.get('LFM_APIKEY'), os.environ.get('LFM_SECRET'))
+	sg = pylast.SessionKeyGenerator(network)
+	sg.web_auth_tokens[url] = url[(url.index('token')+6):]
+	sg.api_key = os.environ.get('LFM_APIKEY')
+	sg.api_secret = os.environ.get('LFM_SECRET')
+	#try to authorize token
+	try:
+		session_key = sg.get_web_auth_session_key(user['lfm_url'])
+		print session_key
+	except pylast.WSError:
+		print "Error authorizing user for last.fm"
+		markUser(user, 'LASTFM INIT ERROR')
+	else:
+		getDatabase().users.update(
+		{'userid': user['userid']},
+		{
+			'$set':{
+				'lfm_session': session_key,
+				'status': 'working'
+			},
+			'$unset':{
+				'lfm_url': True
+			}
+		})

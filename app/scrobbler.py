@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-	
 
-import sys, json, secrets, threading, pymongo
+import sys, json, secrets, threading, pymongo, os
 from datetime import datetime, timedelta
 from functions import *
 from usermanager import *
@@ -20,7 +20,7 @@ def iidxScrobble(user, lfm_object):
 
 	if playerlist == "ERROR":
 		print "Not scrobbling for player %s." % user['userid']
-		markUser(user['userid'], 'NETWORK ERROR')
+		markUser(user, 'NETWORK ERROR')
 		return
 
 	#iterate through songs in list
@@ -57,13 +57,19 @@ if __name__ == '__main__':
 	#generate cookies
 	generateCookies()
 
+	for user in getDatabase().users.find({'status': 'initializeme'}):
+		#give the user 15 minutes to authenticate our app
+		if (datetime.strptime(user['lastchecked'], date_format)+timedelta(minutes=15)) <= datetime.now():
+			lfmInit(user)
+
 	for user in getDatabase().users.find({'status': 'working', 'network': 'ps'}):
+
 		#make sure last.fm still works for this user
 		try:
-			lfm_object = pylast.LastFMNetwork(api_key = LFM_APIKEY, api_secret = LFM_SECRET, session_key = user['lfm_session'])
+			lfm_object = pylast.LastFMNetwork(api_key = os.environ.get('LFM_APIKEY'), api_secret = os.environ.get('LFM_SECRET'), session_key = user['lfm_session'])
 		except pylast.WSError:
 			print "Error connecting to last.fm"
-			markUser(user['userid'], 'LASTFM ERROR')
+			markUser(user, 'LASTFM ERROR')
 		#if it works, go ahead and check the tracklist
 		else:
 			iidxScrobble(user, lfm_object)
