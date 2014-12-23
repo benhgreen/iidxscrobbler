@@ -16,11 +16,5 @@ class SignupForm(Form):
 		if checkExistingUser(self.userid.data.replace(" ", ""), self.network.data):
 			self.userid.errors.append("This ID is already subscribed. Please try another.")
 			return False
-		
-		if sessionKeyGen(self.lastfmuser.data, self.lastfmpwd.data) == "INVALID":
-			self.lastfmuser.errors.append("These credentials don't work. Please try again")
-			self.lastfmpwd.errors.append("These credentials don't work. Please try again")
-			return False
-
-		createUser(self.userid.data.replace(" ", ""), self.network.data, self.lastfmuser.data, self.lastfmpwd.data)
+			
 		return True
