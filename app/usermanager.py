@@ -10,16 +10,19 @@ sys.setdefaultencoding("utf-8")
 date_format = "%d %b %Y %X"
 
 #returns true if user already exists in the database
-def checkExistingUser(userid, network):
-	if(getDatabase().users.find_one({"userid": userid, "network": network})) != None:
+def checkExistingUser(userid, version):
+	if(getDatabase().users.find_one({"userid": userid, "version": version})) != None:
 		return True
 	else:
 		return False
 		
 #checks to see if the user exists on the server
-def checkUserValidity(userid, network):
-	generateCookies([network])
-	if(scrapeData(userid, network) == 'ERROR'):
+def checkUserValidity(userid, version):
+	if version < 22:
+		generateCookies(['ps'])
+	else:
+		generateCookies(['pw'])
+	if(scrapeData(userid, version) == 'ERROR'):
 		return False
 	return True
 
@@ -28,7 +31,7 @@ def markUser(user, reason):
 	with open('errorlog.txt', 'a') as errorlog:
 		errorlog.write("\nMarked user %s for deletion. Reason: %s" % (user['userid'], reason))
 	getDatabase().users.update(
-		{'userid': user['userid'], 'network': user['network']},
+		{'userid': user['userid'], 'version': user['version']},
 		{
 			'$set':{
 					'status': reason
@@ -36,11 +39,11 @@ def markUser(user, reason):
 		})
 
 #adds user to database
-def createUser(userid, network, lfm_user):
+def createUser(userid, version, lfm_user):
 	getDatabase().users.insert(
 		{
 			"userid": userid,
-			"network": network,
+			"version": version,
 			"lfm_username": lfm_user,
 			"lastchecked": datetime.now().strftime(date_format),
 			"status": "initializeme"

@@ -14,7 +14,7 @@ date_format = "%d %b %Y %X"
 
 def iidxScrobble(user, lfm_object):
 	#get user's last 50 played songs from the server
-	playerlist = scrapeData(user["userid"], user["network"])
+	playerlist = scrapeData(user["userid"], int(user["version"]))
 
 	if playerlist == "ERROR":
 		print "Not scrobbling for player %s." % user['userid']
@@ -40,7 +40,7 @@ def iidxScrobble(user, lfm_object):
 			pass
 		#if we've reached this point, this song should be scrobbled!
 		else:
-			songinfo = songLookup(stripSongURL(song, user["network"]))
+			songinfo = songLookup(stripSongURL(song))
 			artist_name = songinfo["artist"]
 			song_name = songinfo["title"]
 			submit_time = int((songtime - datetime(1970,1,1)).total_seconds())
@@ -60,7 +60,7 @@ if __name__ == '__main__':
 		if (datetime.strptime(user['lastchecked'], date_format)+timedelta(minutes=15)) <= datetime.now():
 			lfmInit(user)
 
-	for user in getDatabase().users.find({'status': 'working', 'network': 'ps'}):
+	for user in getDatabase().users.find({'status': 'working', 'version': {'$lt': 22}}):
 
 		#make sure last.fm still works for this user
 		try:

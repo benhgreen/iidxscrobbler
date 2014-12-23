@@ -11,28 +11,29 @@ playerdata = None
 cookies = {'pw': None, 'ps': None}
 
 #scrape data from import.io
-def scrapeData(userid, network):
+def scrapeData(userid, version):
 	client = clientGen()
 	client.connect()
 	queryLatch = latch.latch(1)
 
-	global target_url, connector_guid, short_url
+	global target_url, connector_guid, short_url, cookie
 
 	#if the userid is 'refresh_music', this method will update the music library, otherwise it will check the user's recently played
 	#stuff for scraping programmed sun
-	cookie = cookies[network]
-	if(network == 'ps'):
+	if(version < 22):
+		cookie = cookies['ps']
 		short_url = "webui.programmedsun.com"
 		if userid == "refresh_music":
 			print "refreshing PS song list..."
-			target_url = "http://webui.programmedsun.com/iidx/0/music"
+			target_url = "http://webui.programmedsun.com/iidx/%d/music" % version
 			connector_guid = "e53e03d2-1468-4ebb-8fe9-2ef64de33db2"
 		else:
 			print "refreshing PS player %s's tracklist..." % userid
-			target_url = "http://webui.programmedsun.com/iidx/0/players/%s/scores" % userid
+			target_url = "http://webui.programmedsun.com/iidx/%d/players/%s/scores" % (version, userid)
 			connector_guid = "9247219f-a36f-4e6b-85b0-1956eff5836d"
 	#stuff for scraping programmed world
-	elif(network == 'pw'):
+	elif(version == 22):
+		cookie = cookies['pw']
 		short_url = "programmedworld.net"
 		if(userid == "refresh_music"):
 			print "refreshing PW song list..."
@@ -112,13 +113,15 @@ def refreshSongList(network):
 
 
 #strip song url to its numerical id
-def stripSongURL(song, network):
+def stripSongURL(song, version):
 	global songurl
 	#for whatever reason the programmed world scraper leaves an
 	#extra slash in the source url, will look into later
-	if network == 'pw':
+	if version > 21:
+		#pw
 		songurl = song["song_info/_source"][15:]
 	else:
+		#ps
 		songurl = song["song_info/_source"][14:]
 	return songurl[:songurl.index('/')]
 
