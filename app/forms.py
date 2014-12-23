@@ -24,7 +24,7 @@ class SignupForm(Form):
 		return True
 
 	def lfmURLGen(self):
-		network = pylast.get_lastfm_network(os.environ.get('LFM_API'), os.environ.get('LFM_SECRET'))
+		network = pylast.get_lastfm_network(os.environ.get('LFM_APIKEY'), os.environ.get('LFM_SECRET'))
 		sg = pylast.SessionKeyGenerator(network)
 		url = sg.get_web_auth_url()
 		getDatabase().users.update(
