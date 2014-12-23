@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-	
 
 import sys, httplib, urllib, importio, latch, string, pymongo
-from usermanager import getDatabase
 from secrets import *
 
 reload(sys)
@@ -93,7 +92,7 @@ def scrapeData(userid, network):
 # refreshes song list and converts to dictionary where key is songid
 # and value is tuple (title, artist)
 def refreshSongList(network):
-	database = getDatabase()
+	database = getMusicDatabase()
 
 	raw_data = scrapeData('refresh_music', network)
 
@@ -126,12 +125,12 @@ def stripSongURL(song, network):
 
 #return song info from main data bank
 def songLookup(songid):
-	return getDatabase().musiclist.find_one({"songid": songid})
+	return getMusicDatabase().musiclist.find_one({"songid": songid})
 
-def generateCookies():
+def generateCookies(networks):
 	#makes a small to import.io to just login and return a cookie without loading
 	#anything else
-	for network in ['ps']:
+	for network in networks:
 		client = clientGen()
 		client.connect()
 		queryLatch = latch.latch(1)
@@ -191,10 +190,15 @@ def generateCookies():
 		client.disconnect()
 		print cookies
 
+#initialize MongoClient object and return database
+def getMusicDatabase():
+	client = MongoClient(os.environ.get('MONGODB_URL'))
+	return client.userlist
+
 #makes this file double as a convenient way to refresh song lists from the server
 #after wiping the database manually
 if __name__ == '__main__':
-	generateCookies()
+	generateCookies(['ps', 'pw'])
 
 	refreshSongList('pw')
 	refreshSongList('ps')

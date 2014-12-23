@@ -2,6 +2,7 @@
 import sys, json, pylast, os
 from datetime import datetime
 from secrets import *
+from functions import *
 from pymongo import MongoClient
 
 reload(sys)
@@ -15,6 +16,13 @@ def checkExistingUser(userid, network):
 	else:
 		return False
 		
+#checks to see if the user exists on the server
+def checkUserValidity(userid, network):
+	generateCookies([network])
+	if(scrapeData(userid, network) == 'ERROR'):
+		return False
+	return True
+
 #mark user for later deletion if calls to their PS/PW/last.fm profile don't work
 def markUser(user, reason):
 	with open('errorlog.txt', 'a') as errorlog:

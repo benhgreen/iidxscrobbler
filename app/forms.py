@@ -12,8 +12,12 @@ class SignupForm(Form):
 		if not Form.validate(self):
 			return False
 
-		if checkExistingUser(self.userid.data.replace(" ", ""), self.network.data):
+		if checkExistingUser(self.userid.data, self.network.data):
 			self.userid.errors.append("This ID is already subscribed. Please try another.")
+			return False
+
+		if not checkUserValidity(self.userid.data, self.network.data):
+			self.userid.errors.append("Invalid userid.")
 			return False
 
 		createUser(self.userid.data.replace(" ", ""), self.network.data, self.lastfmuser.data)

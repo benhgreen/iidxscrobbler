@@ -13,8 +13,6 @@ sys.setdefaultencoding("utf-8")
 date_format = "%d %b %Y %X"
 
 def iidxScrobble(user, lfm_object):
-	#make this method run every n seconds
-	
 	#get user's last 50 played songs from the server
 	playerlist = scrapeData(user["userid"], user["network"])
 
@@ -55,7 +53,7 @@ def iidxScrobble(user, lfm_object):
 
 if __name__ == '__main__':
 	#generate cookies
-	generateCookies()
+	generateCookies(['ps'])
 
 	for user in getDatabase().users.find({'status': 'initializeme'}):
 		#give the user 15 minutes to authenticate our app
