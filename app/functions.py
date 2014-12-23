@@ -192,7 +192,7 @@ def generateCookies(networks):
 
 #initialize MongoClient object and return database
 def getMusicDatabase():
-	client = MongoClient(os.environ.get('MONGODB_URL'))
+	client = pymongo.MongoClient(os.environ.get('MONGODB_URL'))
 	return client.userlist
 
 #makes this file double as a convenient way to refresh song lists from the server
