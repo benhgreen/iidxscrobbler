@@ -60,7 +60,7 @@ if __name__ == '__main__':
 		if (datetime.strptime(user['lastchecked'], date_format)+timedelta(minutes=15)) <= datetime.now():
 			lfmInit(user)
 
-	for user in getDatabase().users.find({'status': 'working', 'version': {'$lt': 22}}):
+	for user in getDatabase().users.find({'status': 'working', 'version': {'$in': ['0', '21']}}):
 
 		#make sure last.fm still works for this user
 		try:

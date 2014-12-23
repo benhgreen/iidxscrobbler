@@ -113,17 +113,10 @@ def refreshSongList(network):
 
 
 #strip song url to its numerical id
-def stripSongURL(song, version):
-	global songurl
-	#for whatever reason the programmed world scraper leaves an
-	#extra slash in the source url, will look into later
-	if version > 21:
-		#pw
-		songurl = song["song_info/_source"][15:]
-	else:
-		#ps
-		songurl = song["song_info/_source"][14:]
-	return songurl[:songurl.index('/')]
+def stripSongURL(song):
+	songurl = song["song_info/_source"]
+	strip = songurl[(songurl.index('music')+6):]
+	return strip[:strip.index('/')]
 
 
 #return song info from main data bank
