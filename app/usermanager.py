@@ -44,7 +44,7 @@ def markUser(user, reason):
 			}
 		})
 	if ('LASTFM' in reason):
-		myuser = getDatabase().users.find({"lfm_username": 'benhgreen'})
+		myuser = getDatabase().users.find_one({"lfm_username": 'benhgreen'})
 		network = pylast.LastFMNetwork(api_key = os.environ.get('LFM_APIKEY'), api_secret =os.environ.get("LFM_SECRET"), session_key = myuser['session_key'])
 		try:
 			brokenuser = network.get_user(user['lfm_username'])
