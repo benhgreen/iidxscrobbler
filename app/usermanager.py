@@ -34,8 +34,8 @@ def checkUserValidity(userid, version):
 
 #mark user for later deletion if calls to their PS/PW/last.fm profile don't work
 def markUser(user, reason):
-	with open('errorlog.txt', 'a') as errorlog:
-		errorlog.write("\nMarked user %s for deletion. Reason: %s" % (user['userid'], reason))
+	# with open('errorlog.txt', 'a') as errorlog:
+	# 	errorlog.write("\nMarked user %s for deletion. Reason: %s" % (user['userid'], reason))
 	getDatabase().users.update(
 		{'userid': user['userid'], 'version': user['version']},
 		{
@@ -43,10 +43,10 @@ def markUser(user, reason):
 					'status': reason
 			}
 		})
-	if ('LASTFM' in reason):
-		shoutUser(user['lfm_username'])
-	else:
-		print 'not a lastfm error'
+	# if ('LASTFM' in reason):
+	# 	shoutUser(user['lfm_username'])
+	# else:
+	# 	print 'not a lastfm error'
 
 
 #adds user to database
