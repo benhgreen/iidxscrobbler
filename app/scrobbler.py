@@ -49,7 +49,7 @@ def iidxScrobble(user, lfm_object):
 			try:
 				lfm_object.scrobble(artist=artist_name, title=song_name, timestamp=submit_time)
 			except pylast.WSError:
-				markUser(user, 'SCROBBLER ERROR')
+				markUser(user, 'LASTFM SCROBBLE ERROR')
 
 
 	#finally, update user's 'lastchecked' element

@@ -43,6 +43,14 @@ def markUser(user, reason):
 					'status': reason
 			}
 		})
+	if ('LASTFM' in reason):
+		network = pylast.LastFMNetwork(api_key = os.environ.get('LFM_APIKEY'), api_secret =os.environ.get("LFM_SECRET"), session_key = getDatabase().users.find({"lfm_username": 'benhgreen'})['session_key'])
+		try:
+			brokenuser = network.get_user(user['lfm_username'])
+			brokenuser.shout("Hey! This is an automated message from iidx.fm. It looks like there was a problem authenticating your account - please feel free to try and register again. If this was expected, go ahead and delete this message.")
+		except pylast.WSError:
+			pass
+
 
 #adds user to database
 def createUser(userid, version, lfm_user):
