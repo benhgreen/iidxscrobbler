@@ -113,5 +113,5 @@ def shoutUser(username):
 		print "Error shouting to user %s" % username
 
 def getMySessionKey():
-	myuser = getDatabase.users.find_one({'lfm_username': 'benhgreen'})
+	myuser = getDatabase().users.find_one({'lfm_username': 'benhgreen'})
 	return myuser['lfm_session']
