@@ -60,9 +60,25 @@ if __name__ == '__main__':
 	generateCookies(['ps'])
 
 	for user in getDatabase().users.find({'status': 'initializeme'}):
-		#give the user 15 minutes to authenticate our app
-		if (datetime.strptime(user['lastchecked'], date_format)+timedelta(minutes=15)) <= datetime.now():
-			lfmInit(user)
+
+		#if we already have an instance of this lfm user working, just copy that session key
+		usercheck = getDatabase().users.find_one({'lfm_username': user['lfm_username'], 'status': 'working'})
+		if (usercheck != None):
+			getDatabase().users.update(
+			{'userid': user['userid'], 'version': user['version']},
+			{
+				'$set':{
+					'lfm_session': usercheck['lfm_session'],
+					'status': 'working'
+				},
+				'$unset':{
+					'lfm_url': True
+				}
+			})		
+		else:
+			#give the user 15 minutes to authenticate our app
+			if (datetime.strptime(user['lastchecked'], date_format)+timedelta(minutes=10)) <= datetime.now():
+				lfmInit(user)
 
 	for user in getDatabase().users.find({'status': 'working', 'version': {'$in': ['0', '21']}}):
 

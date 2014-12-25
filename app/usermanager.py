@@ -93,7 +93,7 @@ def lfmInit(user):
 		markUser(user, 'LASTFM INIT ERROR')
 	else:
 		getDatabase().users.update(
-		{'userid': user['userid']},
+		{'userid': user['userid'], 'version': user['version']},
 		{
 			'$set':{
 				'lfm_session': session_key,
