@@ -11,8 +11,14 @@ date_format = "%d %b %Y %X"
 
 #returns true if user already exists in the database
 def checkExistingUser(userid, version):
-	if(getDatabase().users.find_one({"userid": userid, "version": version})) != None:
-		return True
+	user = getDatabase().users.find_one({"userid": userid, "version": version})
+	if (user != None):
+		if(user['status'] != 'working'):
+			getDatabase().removedUsers.insert(user)
+			getDatabase().users.remove({'userid': userid, 'version': version}, 'true')
+			return False
+		else:
+			return True
 	else:
 		return False
 		
