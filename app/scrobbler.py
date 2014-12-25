@@ -53,7 +53,7 @@ def iidxScrobble(user, lfm_object):
 
 
 	#finally, update user's 'lastchecked' element
-	updateLastChecked(user['userid'])
+	updateLastChecked(user['userid'], user['version'])
 
 if __name__ == '__main__':
 	#generate cookies

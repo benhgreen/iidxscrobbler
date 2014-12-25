@@ -61,9 +61,9 @@ def createUser(userid, version, lfm_user):
 		})
 
 #updates user's 'lastchecked' element, mostly copied from deleteUser
-def updateLastChecked(userid):
+def updateLastChecked(userid, version):
 	getDatabase().users.update(
-		{'userid': userid},
+		{'userid': userid, 'version': version},
 		{
 			'$set':{
 					'lastchecked': datetime.now().strftime(date_format)
