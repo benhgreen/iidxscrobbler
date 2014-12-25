@@ -36,6 +36,7 @@ def checkUserValidity(userid, version):
 def markUser(user, reason):
 	# with open('errorlog.txt', 'a') as errorlog:
 	# 	errorlog.write("\nMarked user %s for deletion. Reason: %s" % (user['userid'], reason))
+	print 'marking user %s with reason %s' % (user['userid'], reason)
 	getDatabase().users.update(
 		{'userid': user['userid'], 'version': user['version']},
 		{

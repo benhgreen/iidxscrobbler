@@ -48,10 +48,9 @@ def iidxScrobble(user, lfm_object):
 			print "		scrobbling %s: %s for player %s" % (song_name, submit_time, user['userid'])
 			try:
 				lfm_object.scrobble(artist=artist_name, title=song_name, timestamp=submit_time)
-			except pylast.WSError, e:
-				print 'scrobble error for user %s' % user['userid']
-				raise e
-				# markUser(user, 'LASTFM SCROBBLE ERROR')
+			except pylast.WSError:
+				markUser(user, 'LASTFM SCROBBLE ERROR')
+				return
 
 
 	#finally, update user's 'lastchecked' element
