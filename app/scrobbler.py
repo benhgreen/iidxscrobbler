@@ -57,8 +57,8 @@ def iidxScrobble(user, lfm_object):
 	updateLastChecked(user['userid'], user['version'])
 
 if __name__ == '__main__':
-	#generate cookies
-	generateCookies(['ps'])
+	#test cookies
+	testCookies(['ps'])
 
 	for user in getDatabase().users.find({'status': 'initializeme'}):
 

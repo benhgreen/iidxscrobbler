@@ -8,7 +8,6 @@ sys.setdefaultencoding("utf-8")
 
 songdata = None
 playerdata = None
-cookies = {'pw': None, 'ps': None}
 
 #scrape data from import.io
 def scrapeData(userid, version):
@@ -21,7 +20,7 @@ def scrapeData(userid, version):
 	#if the userid is 'refresh_music', this method will update the music library, otherwise it will check the user's recently played
 	#stuff for scraping programmed sun
 	if(version < 22):
-		cookie = cookies['ps']
+		cookie = getMusicDatabase().cookies.find_one({'network': 'ps'})['cookie']
 		short_url = "webui.programmedsun.com"
 		if userid == "refresh_music":
 			print "refreshing PS song list..."
@@ -33,7 +32,7 @@ def scrapeData(userid, version):
 			connector_guid = "9247219f-a36f-4e6b-85b0-1956eff5836d"
 	#stuff for scraping programmed world
 	elif(version == 22):
-		cookie = cookies['pw']
+		cookie = getMusicDatabase().cookies.find_one({'network': 'pw'})['cookie']
 		short_url = "programmedworld.net"
 		if(userid == "refresh_music"):
 			print "refreshing PW song list..."
@@ -98,18 +97,19 @@ def refreshSongList(network):
 	raw_data = scrapeData('refresh_music', network)
 
 	for song in raw_data:
-		songid = stripSongURL(song, network)
-		title = song["song_info/_text"]
-		#strip out stupid leggendaria suffix
-		if "†LEGGENDARIA" in song["song_info/_text"]:
-			title = song["song_info/_text"].replace("†LEGGENDARIA", "")
+		songid = stripSongURL(song)
 
-		database.musiclist.insert(
-				{
-					"songid": songid,
-					"title": title,
-					"artist": song["artist"]
-				})
+		if database.musiclist.find_one({'songid': songid}) == None:
+			title = song["song_info/_text"]
+			#strip out stupid leggendaria suffix
+			if "†LEGGENDARIA" in song["song_info/_text"]:
+				title = song["song_info/_text"].replace("†LEGGENDARIA", "")
+
+			database.musiclist.insert({
+						"songid": songid,
+						"title": title,
+						"artist": song["artist"]
+					})
 
 
 #strip song url to its numerical id
@@ -158,7 +158,13 @@ def generateCookies(networks):
 					print json.dumps(message["data"], indent = 4)
 					data = "ERROR"
 				else:
-					cookies[network] = message["data"]["cookies"][0]
+					cookie = message["data"]["cookies"][0]
+					getMusicDatabase().cookies.update({'network': network},
+						{
+						'$set': {
+							'cookie': cookie
+						}
+						})
 			if query.finished(): 
 				queryLatch.countdown()
 		#import.io's template queries sure are awesome
@@ -184,17 +190,28 @@ def generateCookies(networks):
 
 		queryLatch.await()
 		client.disconnect()
-		print cookies
 
 #initialize MongoClient object and return database
 def getMusicDatabase():
 	client = pymongo.MongoClient(os.environ.get('MONGODB_URL'))
 	return client.userlist
 
+#grab cookies from database and test them, renewing if necessary
+def testCookies(networks):
+	testUser = {'ps': '8717-9975', 'pw': '4623-0106'}
+	testVersion = {'ps': 0, 'pw': 22}
+	
+	for network in networks:
+		print 'testing cookie for %s' % network
+		try:
+			scrapeData(testUser[network], testVersion[network])
+		except Exception:
+			generateCookies([network])
+
 #makes this file double as a convenient way to refresh song lists from the server
 #after wiping the database manually
 if __name__ == '__main__':
-	generateCookies(['ps', 'pw'])
+	testCookies(['ps', 'pw'])
 
 	refreshSongList('pw')
 	refreshSongList('ps')
