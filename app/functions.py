@@ -203,9 +203,8 @@ def testCookies(networks):
 	
 	for network in networks:
 		print 'testing cookie for %s' % network
-		try:
-			scrapeData(testUser[network], testVersion[network])
-		except Exception:
+		test = scrapeData(testUser[network], testVersion[network])
+		if test == 'ERROR':
 			generateCookies([network])
 
 #makes this file double as a convenient way to refresh song lists from the server
