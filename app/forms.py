@@ -16,12 +16,12 @@ class SignupForm(Form):
 			self.userid.errors.append("This ID is already subscribed. Please try another.")
 			return False
 
-		if not checkUserValidity(self.userid.data, int(self.version.data)):
-			self.userid.errors.append("Invalid userid.")
-			return False
-
 		if not validateLFMUser(self.lastfmuser.data):
 			self.lastfmuser.errors.append("nonexistant lfm id")
+			return False
+
+		if not checkUserValidity(self.userid.data, int(self.version.data)):
+			self.userid.errors.append("Invalid userid.")
 			return False
 
 		createUser(self.userid.data.replace(" ", ""), self.version.data, self.lastfmuser.data)
