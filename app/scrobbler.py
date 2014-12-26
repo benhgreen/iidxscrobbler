@@ -22,18 +22,15 @@ def iidxScrobble(user, lfm_object):
 		return
 
 	#iterate through songs in list
-	for song in playerlist:
-
-		#make sure the song hasn't already been checked
+	for song in reversed(playerlist):
 		
 		#this time is incremented by 5 hours to compensate for being in EST
 		songtime = datetime.strptime(song['timestamp'], date_format)+timedelta(hours=5)
 		lastchecked = datetime.strptime(user['lastchecked'], date_format)
 
-		#if we reach our 'lastchecked' time, then obviously there's no use checking the 
-		#older songs
+		#ignore songs that we already have scrobbled
 		if lastchecked >= songtime:
-			break
+			pass
 		#if we see a song with misscount of -1, the user did not play it to completion and 
 		#therefore it should not be scrobbled
 		elif song['miss_count'] == -1:
