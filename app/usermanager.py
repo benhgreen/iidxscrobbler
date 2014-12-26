@@ -32,6 +32,16 @@ def checkUserValidity(userid, version):
 		return False
 	return True
 
+def validateLFMUser(username):
+	network = pylast.LastFMNetwork(api_key = os.environ.get('LFM_APIKEY'), api_secret = os.environ.get('LFM_SECRET'), session_key = getMySessionKey())
+	try:
+		testuser = network.get_user(username)
+		testuser.get_friends()
+	except pylast.WSError:
+		return False
+	else:
+		return True
+
 #mark user for later deletion if calls to their PS/PW/last.fm profile don't work
 def markUser(user, reason):
 	# with open('errorlog.txt', 'a') as errorlog:

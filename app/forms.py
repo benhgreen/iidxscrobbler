@@ -20,6 +20,10 @@ class SignupForm(Form):
 			self.userid.errors.append("Invalid userid.")
 			return False
 
+		if not validateLFMUser(self.lastfmuser.data):
+			self.lastfmuser.errors.append("nonexistant lfm id")
+			return False
+
 		createUser(self.userid.data.replace(" ", ""), self.version.data, self.lastfmuser.data)
 		return True
 
