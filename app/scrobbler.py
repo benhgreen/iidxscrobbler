@@ -55,7 +55,7 @@ def iidxScrobble(user, lfm_object):
 
 if __name__ == '__main__':
 	#test cookies
-	testCookies(['ps'])
+	testCookies(['ps', 'pw'])
 
 	for user in getDatabase().users.find({'status': 'initializeme'}):
 
@@ -78,7 +78,7 @@ if __name__ == '__main__':
 			if (datetime.strptime(user['lastchecked'], date_format)+timedelta(minutes=10)) <= datetime.now():
 				lfmInit(user)
 
-	for user in getDatabase().users.find({'status': 'working', 'version': {'$in': ['0', '21']}}):
+	for user in getDatabase().users.find({'status': 'working'}):
 
 		#make sure last.fm still works for this user
 		try:
