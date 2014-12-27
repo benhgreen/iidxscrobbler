@@ -27,6 +27,8 @@ class SignupForm(Form):
 		createUser(self.userid.data.replace(" ", ""), self.version.data, self.lastfmuser.data)
 		return True
 
+	#generate url with last.fm auth token to redirect the user to once
+	#userid and last.fm account have been verified
 	def lfmURLGen(self):
 		network = pylast.get_lastfm_network(os.environ.get('LFM_APIKEY'), os.environ.get('LFM_SECRET'))
 		sg = pylast.SessionKeyGenerator(network)

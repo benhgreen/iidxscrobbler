@@ -21,7 +21,7 @@ def iidxScrobble(user, lfm_object):
 		markUser(user, 'NETWORK ERROR')
 		return
 
-	#iterate through songs in list
+	#iterate through songs in reversed (chronological) order
 	for song in reversed(playerlist):
 		
 		#this time is incremented by 5 hours to compensate for being in EST
@@ -53,6 +53,7 @@ def iidxScrobble(user, lfm_object):
 	#finally, update user's 'lastchecked' element
 	updateLastChecked(user['userid'], user['version'])
 
+#this is run every so often(between 10 and 20 minutes) as a cronjob
 if __name__ == '__main__':
 	#test cookies
 	testCookies(['ps', 'pw'])
@@ -74,7 +75,7 @@ if __name__ == '__main__':
 				}
 			})		
 		else:
-			#give the user 15 minutes to authenticate our app
+			#give the user 10 minutes to authenticate our app
 			if (datetime.strptime(user['lastchecked'], date_format)+timedelta(minutes=10)) <= datetime.now():
 				lfmInit(user)
 

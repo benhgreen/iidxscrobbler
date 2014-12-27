@@ -12,6 +12,7 @@ date_format = "%d %b %Y %X"
 #returns true if user already exists in the database
 def checkExistingUser(userid, version):
 	user = getDatabase().users.find_one({"userid": userid, "version": version})
+	#if a broken user exists, remove it and insert the new one
 	if (user != None):
 		if(user['status'] != 'working'):
 			getDatabase().removedUsers.insert(user)
@@ -32,6 +33,7 @@ def checkUserValidity(userid, version):
 		return False
 	return True
 
+#checks to see if the LFM users exists
 def validateLFMUser(username):
 	network = pylast.LastFMNetwork(api_key = os.environ.get('LFM_APIKEY'), api_secret = os.environ.get('LFM_SECRET'), session_key = getMySessionKey())
 	try:
@@ -102,6 +104,7 @@ def lfmInit(user):
 	except pylast.WSError:
 		print "Error authorizing user for last.fm"
 		markUser(user, 'LASTFM INIT ERROR')
+	#success, add new session key and remove auth token
 	else:
 		getDatabase().users.update(
 		{'userid': user['userid'], 'version': user['version']},
@@ -115,6 +118,7 @@ def lfmInit(user):
 			}
 		})
 
+#send LFM user an automated message in case their account fails
 def shoutUser(username):
 	network = pylast.LastFMNetwork(api_key = os.environ.get('LFM_APIKEY'), api_secret = os.environ.get('LFM_SECRET'), session_key = getMySessionKey())
 	try:
@@ -123,6 +127,7 @@ def shoutUser(username):
 	except pylast.WSError:
 		print "Error shouting to user %s" % username
 
+#return my own session key to be used when shouting
 def getMySessionKey():
 	myuser = getDatabase().users.find_one({'lfm_username': 'benhgreen'})
 	return myuser['lfm_session']
