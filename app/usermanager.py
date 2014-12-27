@@ -25,9 +25,9 @@ def checkExistingUser(userid, version):
 #checks to see if the user exists on the server
 def checkUserValidity(userid, version):
 	if version < 22:
-		generateCookies(['ps'])
+		testCookies(['ps'])
 	else:
-		generateCookies(['pw'])
+		testCookies(['pw'])
 	if(scrapeData(userid, version) == 'ERROR'):
 		return False
 	return True
