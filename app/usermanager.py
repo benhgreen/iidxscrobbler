@@ -64,10 +64,12 @@ def markUser(user, reason):
 
 #adds user to database
 def createUser(userid, version, lfm_user):
+	network = {'21': 'ps', '0': 'ps', '22': 'pw'}
 	getDatabase().users.insert(
 		{
 			"userid": userid,
 			"version": version,
+			"network": network[version],
 			"lfm_username": lfm_user,
 			"lastchecked": datetime.now().strftime(date_format),
 			"status": "initializeme"

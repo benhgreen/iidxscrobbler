@@ -55,10 +55,13 @@ def iidxScrobble(user, lfm_object):
 
 #this is run every so often(between 10 and 20 minutes) as a cronjob
 if __name__ == '__main__':
-	#test cookies
-	testCookies(['ps', 'pw'])
 
-	for user in getDatabase().users.find({'status': 'initializeme'}):
+	network = sys.argv[1]
+
+	#test cookies
+	testCookies([network])
+
+	for user in getDatabase().users.find({'status': 'initializeme', 'network': network}):
 
 		#if we already have an instance of this lfm user working, just copy that session key
 		usercheck = getDatabase().users.find_one({'lfm_username': user['lfm_username'], 'status': 'working'})
@@ -79,7 +82,7 @@ if __name__ == '__main__':
 			if (datetime.strptime(user['lastchecked'], date_format)+timedelta(minutes=10)) <= datetime.now():
 				lfmInit(user)
 
-	for user in getDatabase().users.find({'status': 'working'}):
+	for user in getDatabase().users.find({'status': 'working', 'network': network}):
 
 		#make sure last.fm still works for this user
 		try:
