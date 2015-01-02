@@ -24,7 +24,7 @@ class SignupForm(Form):
 			self.userid.errors.append("Invalid userid.")
 			return False
 
-		createUser(self.userid.data.replace(" ", ""), self.version.data, self.game.data, self.lastfmuser.data)
+		createUser(self.userid.data.replace(" ", ""), self.version.data, self.lastfmuser.data)
 		return True
 
 	#generate url with last.fm auth token to redirect the user to once
