@@ -35,7 +35,7 @@ def checkUserValidity(userid, version):
 
 #checks to see if the LFM users exists
 def validateLFMUser(username):
-	network = pylast.LastFMNetwork(api_key = os.environ.get('LFM_APIKEY'), api_secret = os.environ.get('LFM_SECRET'), session_key = getMySessionKey())
+	network = pylast.LastFMNetwork(api_key = os.environ.get('LFM_APIKEY'), api_secret = os.environ.get('LFM_SECRET'))
 	try:
 		testuser = network.get_user(username)
 		testuser.get_friends()
