@@ -47,7 +47,7 @@ def iidxScrobble(user, lfm_object):
 				lfm_object.scrobble(artist=artist_name, title=song_name, timestamp=submit_time)
 			except pylast.WSError, e:
 				# markUser(user, 'LASTFM SCROBBLE ERROR')
-				raise e
+				print e
 				return
 
 
