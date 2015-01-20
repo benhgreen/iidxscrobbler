@@ -212,5 +212,5 @@ def testCookies(networks):
 if __name__ == '__main__':
 	testCookies(['ps', 'pw'])
 
-	refreshSongList('pw')
-	refreshSongList('ps')
+	refreshSongList(22)
+	refreshSongList(0)
