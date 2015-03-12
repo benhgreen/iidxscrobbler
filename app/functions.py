@@ -210,7 +210,15 @@ def testCookies(networks):
 #makes this file double as a convenient way to refresh song lists from the server
 #after wiping the database manually
 if __name__ == '__main__':
-	testCookies(['ps', 'pw'])
+	# testCookies(['ps', 'pw'])s
 
-	refreshSongList(22)
-	refreshSongList(0)
+	# # refreshSongList(22)
+	# refreshSongList(0)
+
+	# print song database
+	database = getMusicDatabase()
+
+	raw_data = scrapeData('refresh_music', network)
+
+	for song in databse.musiclist.find():
+		print "%s : %s" % (song['songid'], song['title'])
